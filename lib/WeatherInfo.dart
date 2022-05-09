@@ -47,11 +47,11 @@ class WeatherInfo {
     
     final cityName = city; //Hardcoded city name to search the API with
     final apiKey = "01787ca7c37221e8632a2dab11901f4c";
-    final requestUrl = "https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}"; //API CALL BY CITY NAME
+    //final requestUrl = "https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}"; //API CALL BY CITY NAME
 
     
     //                 !!!API CALL URL BY CURRENT LOCATION!!!
-    //final requestUrl = "https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}"; //API CALL BY LAT & LON
+    final requestUrl = "https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}"; //API CALL BY LAT & LON
 
     final response = await http.get(Uri.parse(requestUrl));
 
