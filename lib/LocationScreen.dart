@@ -3,8 +3,24 @@
 import 'package:flutter/material.dart';
 
 // hello there
+//theoretically I think this is public and
+//can be accessed from anywhere in the app
+String locToSearch = " ";
 
 class LocationScreen extends StatelessWidget {
+  late TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +50,30 @@ class LocationScreen extends StatelessWidget {
                         hintText: 'Search a Location',
                         prefixIcon: Icon(Icons.search),
                         suffixIcon: Icon(Icons.add_location)),
+                    controller: _controller,
+                    onSubmitted: (String value) async{
+                      locToSearch = value;
+                      await showDialog<void>(
+                        context: context,
+                        builder: (BuildContext context){
+                          return AlertDialog(
+                            title: const Text('Thanks!'),
+                            content: Text(
+                                'You are searching for this location: "$value"'
+                            ),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: (){
+                                  Navigator.pop(context);
+                                },
+                                child: const Text("Ok"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+
+                    },
                   ),
                 ),
               ),
