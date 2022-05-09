@@ -1,6 +1,11 @@
+// ignore_for_file: prefer_const_declarations, unused_local_variable
+
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
+import 'tools/current_location.dart';
+import 'dart:core';
+import 'dart:developer';
 
 class WeatherInfo {
   final location;
@@ -34,17 +39,25 @@ class WeatherInfo {
   }
   //Network request to the weather API given the name of the city as a parameter.
   static Future<WeatherInfo> fetchWeather(city) async {
-    // ignore: prefer_const_declarations
-    final cityName = city;
-    const apiKey = "01787ca7c37221e8632a2dab11901f4c";
-    final requestUrl =
-        "https://api.openweathermap.org/data/2.5/weather?q=$cityName&appid=$apiKey";
+    
+    List<String> curr = await CurrentLocation.updatePosition() as List<String>; //Get the current location of the user
+    String latitude = curr[0];
+    String longitude = curr[1];
+    log(curr[2]); //FOR DEBUGGING Print out the address information gathered by the app to the DegubConsole FOR DEBUGGING
+    
+    final cityName = city; //Hardcoded city name to search the API with
+    final apiKey = "01787ca7c37221e8632a2dab11901f4c";
+    //final requestUrl = "https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}"; //API CALL BY CITY NAME
+
+    
+    //                 !!!API CALL URL BY CURRENT LOCATION!!!
+    final requestUrl = "https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}"; //API CALL BY LAT & LON
 
     final response = await http.get(Uri.parse(requestUrl));
 
-    if (response.statusCode == 200) {
+    if(response.statusCode == 200) {
       return WeatherInfo.fromJson(jsonDecode(response.body));
-    } else {
+    }else {
       throw Exception("Error loading request URL info");
     }
   }

@@ -17,6 +17,7 @@ import 'DailyWeatherData.dart';
 import 'DailyWeatherItem.dart';
 import 'MainWidget.dart';
 import 'WeatherInfo.dart';
+import 'tools/current_location.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
