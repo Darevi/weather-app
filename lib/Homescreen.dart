@@ -54,7 +54,7 @@ class HomeScreenState extends State<HomeScreen> {
           children: [
             IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/locations');
+                Navigator.pushNamed(context, '/mult');
               },
               icon: Icon(Icons.list),
             )
