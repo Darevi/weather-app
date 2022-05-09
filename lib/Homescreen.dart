@@ -30,7 +30,7 @@ class HomeScreenState extends State<HomeScreen> {
   String cityName = 'Seattle';
   bool isLoading = false;
   late DailyWeatherData weatherData;
-  late DailyForecastData forecast;
+  DailyForecastData? forecast;
 
   @override
   void initState() {
@@ -128,10 +128,10 @@ class HomeScreenState extends State<HomeScreen> {
         // ignore: unnecessary_null_comparison
         child: forecast != null
             ? ListView.builder(
-                itemCount: forecast.list.length,
+                itemCount: forecast?.list.length,
                 scrollDirection: Axis.vertical,
                 itemBuilder: (context, index) =>
-                    DailyWeatherItem(weather: forecast.list.elementAt(index)),
+                    DailyWeatherItem(weather: forecast?.list.elementAt(index)),
               )
             : Container(),
       ),
