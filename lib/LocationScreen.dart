@@ -10,17 +10,17 @@ String locToSearch = " ";
 class LocationScreen extends StatelessWidget {
   late TextEditingController _controller;
 
-  @override
+  /*@override
   void initState() {
     super.initState();
     _controller = TextEditingController();
-  }
+  }*/
 
-  @override
+  /*@override
   void dispose() {
     _controller.dispose();
     super.dispose();
-  }
+  }*/
   @override
   Widget build(BuildContext context) {
     return Scaffold(
