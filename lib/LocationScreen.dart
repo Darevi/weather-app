@@ -46,6 +46,7 @@ class LocationScreenState extends State<LocationScreen>{
                 color: Colors.white,
                 child: Center(
                   child: TextField(
+                    style: TextStyle(fontSize: 16.0, color: Colors.black),
                     decoration: InputDecoration(
                         hintText: 'Search a Location',
                         prefixIcon: Icon(Icons.search),
