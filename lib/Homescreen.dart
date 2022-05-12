@@ -142,6 +142,7 @@ class HomeScreenState extends State<HomeScreen> {
     return WeatherInfo.fetchWeather(cityName);
   }
 
+//Method for the Daily Forecast
   loadWeather() async {
     setState(() {
       isLoading = true;

@@ -3,7 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 //import 'package:sampleproject/tools/DailyWeatherData.dart';
-
+import 'package:intl/intl.dart';
 import 'DailyWeatherData.dart';
 
 class DailyWeatherItem extends StatelessWidget {
@@ -21,8 +21,8 @@ class DailyWeatherItem extends StatelessWidget {
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              //Text(weather.name,
-              //style: new TextStyle(color: Colors.black, fontSize: 24.0)),
+              Text(DateFormat.E().format(weather.date),
+                  style: new TextStyle(color: Colors.white, fontSize: 18.0)),
               Text(weather.main,
                   style: new TextStyle(color: Colors.black, fontSize: 24.0)),
               Text('${weather.temp.toString()}°F',

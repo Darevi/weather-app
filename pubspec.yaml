@@ -33,6 +33,7 @@ dependencies:
   geocoding: ^2.0.4
   geolocator: ^8.2.0
   http: ^0.13.4
+  intl: ^0.17.0
   weather: ^2.0.1
 
 
