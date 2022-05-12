@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, unnecessary_string_interpolations, must_be_immutable
 
 import 'package:flutter/material.dart';
-//import 'weather_tile.dart';
+import 'tools/weather_tile.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MainWidget extends StatelessWidget {
@@ -86,6 +86,21 @@ class MainWidget extends StatelessWidget {
                     fontWeight: FontWeight.w600),
               ),
             ],
+          ), 
+        ),
+        SizedBox(
+          height: MediaQuery.of(context).size.height / 2.5,
+          width: MediaQuery.of(context).size.width, //Rest of the page
+          child: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: ListView( //List the columns
+              children: [ //Create WeatherTile objects
+                //WeatherTile(icon: Icons.thermostat_outlined, title: "Temperature", subTitle: "${temp.toInt().toString()}\u00B0"),
+                WeatherTile(icon: weatherIcon, title: "Weather", subTitle: "${weather.toString()}"),
+                WeatherTile(icon: Icons.water_drop, title: "Humidity", subTitle: "${humidity.toString()}%"),
+                WeatherTile(icon: Icons.air_outlined, title: "Wind Speed", subTitle: "${windSpeed.toInt().toString()} MPH"),
+              ],
+            ),
           ),
         ),
       ],

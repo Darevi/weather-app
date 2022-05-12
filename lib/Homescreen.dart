@@ -147,9 +147,11 @@ class HomeScreenState extends State<HomeScreen> {
     setState(() {
       isLoading = true;
     });
-
-    final lat = 47.608013;
-    final lon = -122.335167;
+    List<String> curr = await CurrentLocation.updatePosition() as List<String>; //Get the current location of the user
+    String lat = curr[0];
+    String lon = curr[1];
+    //final lat = 47.608013;
+    //final lon = -122.335167;
     final key = "ffa47a3d1aa0f5e91ff7fd8cb2356002";
     //final forecastURL =
     //"https://api.openweathermap.org/data/2.5/forecast?APPID=$key&lat=${lat.toString()}&lon=${lon.toString()}";
