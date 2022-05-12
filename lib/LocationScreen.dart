@@ -7,20 +7,20 @@ import 'package:flutter/material.dart';
 //can be accessed from anywhere in the app
 String locToSearch = " ";
 
-class LocationScreen extends StatelessWidget {
+class LocationScreenState extends State<LocationScreen>{
   late TextEditingController _controller;
-
-  /*@override
+  @override
   void initState() {
     super.initState();
     _controller = TextEditingController();
-  }*/
+  }
 
-  /*@override
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
-  }*/
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,4 +100,16 @@ class LocationScreen extends StatelessWidget {
       ),
     );
   }
+
+
+}
+
+class LocationScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return LocationScreenState();
+    throw UnimplementedError();
+  }
+
 }
