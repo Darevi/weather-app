@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 //import 'package:sampleproject/tools/WeatherInfo.dart';
 
 import 'DailyWeatherData.dart';
+import 'tools/current_location.dart';
 
 class DailyForecastData {
   final List list;
@@ -36,6 +37,9 @@ class DailyForecastData {
       latitude, longitude) async {
     final lat = latitude;
     final long = longitude;
+    /*List<String> curr = await CurrentLocation.updatePosition() as List<String>; //Get the current location of the user
+    String lat = curr[0];
+    String long = curr[1];*/
 
     const key = "ffa47a3d1aa0f5e91ff7fd8cb2356002";
 
