@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 //import 'package:sampleproject/tools/DailyWeatherItem.dart';
 //import 'package:sampleproject/tools/WeatherInfo.dart';
 import 'package:http/http.dart' as http;
+import 'package:mock_weather/HourlyForecastList.dart';
 import 'package:weather/weather.dart';
 //import 'package:geolocator/geolocator.dart';
 //import '../tools/DailyForecastData.dart';
@@ -15,9 +16,11 @@ import 'package:weather/weather.dart';
 import 'DailyForecastData.dart';
 import 'DailyWeatherData.dart';
 import 'DailyWeatherItem.dart';
+import 'HourlyForecastItem.dart';
 import 'MainWidget.dart';
 import 'WeatherInfo.dart';
 import 'tools/current_location.dart';
+import 'HourlyForecastList.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -31,11 +34,11 @@ class HomeScreenState extends State<HomeScreen> {
   bool isLoading = false;
   late DailyWeatherData weatherData;
   DailyForecastData? forecast;
+  HourlyForecastList? hourlyForecast;
 
   @override
   void initState() {
     super.initState();
-
     loadWeather();
   }
 
@@ -94,6 +97,7 @@ class HomeScreenState extends State<HomeScreen> {
   //List view for the hourly forecast.
   final times = ['12', '1', '2', '3', '4', '5', '6', '7', '8', '9', "10", '11'];
   _hourlyForecast() {
+    /*
     return Container(
         height: 100,
         decoration: BoxDecoration(
@@ -115,11 +119,28 @@ class HomeScreenState extends State<HomeScreen> {
                 ),
               );
             }));
+         */
+
+    return Container(
+      height: 130,
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(color: Colors.white),
+          bottom: BorderSide(color: Colors.white),
+        ),
+      ),
+      child: hourlyForecast != null
+          ? ListView.builder(
+              itemCount: hourlyForecast?.list.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) => HourlyForecastItem(
+                  weather: hourlyForecast?.list.elementAt(index)),
+            )
+          : Container(),
+    );
   }
 
-  //List view for the weekly forecast.
-  final days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
+  //List view for the 7-day forecast.
   _dailyForecast() {
     return Expanded(
       child: SizedBox(
@@ -147,7 +168,8 @@ class HomeScreenState extends State<HomeScreen> {
     setState(() {
       isLoading = true;
     });
-    List<String> curr = await CurrentLocation.updatePosition() as List<String>; //Get the current location of the user
+    List<String> curr = await CurrentLocation.updatePosition()
+        as List<String>; //Get the current location of the user
     String lat = curr[0];
     String lon = curr[1];
     //final lat = 47.608013;
@@ -156,13 +178,16 @@ class HomeScreenState extends State<HomeScreen> {
     //final forecastURL =
     //"https://api.openweathermap.org/data/2.5/forecast?APPID=$key&lat=${lat.toString()}&lon=${lon.toString()}";
     final forecastURL =
-        'https://api.openweathermap.org/data/2.5/onecall?lat=${lat.toString()}&lon=${lon.toString()}&exclude=minutely,hourly&appid=$key&units=imperial';
+        'https://api.openweathermap.org/data/2.5/onecall?lat=${lat.toString()}&lon=${lon.toString()}&exclude=minutely&appid=$key&units=imperial';
     final forecastResponse = await http.get(Uri.parse(forecastURL));
 
     if (forecastResponse.statusCode == 200) {
       return setState(() {
         forecast =
             DailyForecastData.fromJson(jsonDecode(forecastResponse.body));
+        hourlyForecast =
+            HourlyForecastList.fromJson(jsonDecode(forecastResponse.body));
+
         isLoading = false;
       });
     }
