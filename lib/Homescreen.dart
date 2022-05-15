@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
 
 import 'dart:convert';
 //import 'dart:js';
@@ -64,33 +64,35 @@ class HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      body: Column(
-        children: [
-          FutureBuilder<WeatherInfo>(
-              future: _search(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return MainWidget(
-                      location: snapshot.data?.location,
-                      temp: snapshot.data?.temp,
-                      tempMin: snapshot.data?.tempMin,
-                      tempMax: snapshot.data?.tempMax,
-                      weather: snapshot.data?.weather,
-                      humidity: snapshot.data?.humidity,
-                      windSpeed: snapshot.data?.windSpeed);
-                } else {
-                  return Center(
-                    child: Text(
-                      "LOADING...",
-                      style: TextStyle(fontSize: 30.0, color: Colors.purple),
-                    ),
-                  );
-                }
-              }),
-          _hourlyForecast(),
-          _dailyForecast(),
-        ],
-      ),
+      body: Container(
+        child: ListView(
+          children: [
+            FutureBuilder<WeatherInfo>(
+                future: _search(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return MainWidget(
+                        location: snapshot.data?.location,
+                        temp: snapshot.data?.temp,
+                        tempMin: snapshot.data?.tempMin,
+                        tempMax: snapshot.data?.tempMax,
+                        weather: snapshot.data?.weather,
+                        humidity: snapshot.data?.humidity,
+                        windSpeed: snapshot.data?.windSpeed);
+                  } else {
+                    return Center(
+                      child: Text(
+                        "LOADING...",
+                        style: TextStyle(fontSize: 30.0, color: Colors.purple),
+                      ),
+                    );
+                  }
+                }),
+            _hourlyForecast(),
+            _dailyForecast(),
+          ],
+        ),
+      )
     );
   }
 
@@ -144,7 +146,7 @@ class HomeScreenState extends State<HomeScreen> {
   _dailyForecast() {
     return Expanded(
       child: SizedBox(
-        height: 180.0,
+        height: 500.0,
         width: 300.0,
         // ignore: unnecessary_null_comparison
         child: forecast != null

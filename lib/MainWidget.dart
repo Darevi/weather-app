@@ -88,23 +88,13 @@ class MainWidget extends StatelessWidget {
             ],
           ),
         ),
-        /*
-        SizedBox(
-          height: MediaQuery.of(context).size.height / 2.5,
-          width: MediaQuery.of(context).size.width, //Rest of the page
-          child: Padding(
-            padding: EdgeInsets.all(10.0),
-            child: ListView( //List the columns
-              children: [ //Create WeatherTile objects
-                //WeatherTile(icon: Icons.thermostat_outlined, title: "Temperature", subTitle: "${temp.toInt().toString()}\u00B0"),
-                WeatherTile(icon: weatherIcon, title: "Weather", subTitle: "${weather.toString()}"),
-                WeatherTile(icon: Icons.water_drop, title: "Humidity", subTitle: "${humidity.toString()}%"),
-                WeatherTile(icon: Icons.air_outlined, title: "Wind Speed", subTitle: "${windSpeed.toInt().toString()} MPH"),
-              ],
-            ),
-          ),
-        ),
-        */
+        Column(
+          children: [
+            WeatherTile(icon: weatherIcon, title: "Weather", subTitle: "${weather.toString()}"),
+            WeatherTile(icon: Icons.water_drop, title: "Humidity", subTitle: "${humidity.toString()}%"),
+            WeatherTile(icon: Icons.air_outlined, title: "Wind Speed", subTitle: "${windSpeed.toInt().toString()} MPH"),
+          ] 
+        )
       ],
     );
   }
