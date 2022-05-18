@@ -1,18 +1,8 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
-
 import 'dart:convert';
-//import 'dart:js';
-//import 'dart:ffi';
 import 'package:flutter/material.dart';
-//import 'package:sampleproject/tools/DailyWeatherItem.dart';
-//import 'package:sampleproject/tools/WeatherInfo.dart';
 import 'package:http/http.dart' as http;
 import 'package:mock_weather/HourlyForecastList.dart';
 import 'package:weather/weather.dart';
-//import 'package:geolocator/geolocator.dart';
-//import '../tools/DailyForecastData.dart';
-//import '../tools/DailyWeatherData.dart';
-//import '../tools/MainWidget.dart';
 import 'DailyForecastData.dart';
 import 'DailyWeatherData.dart';
 import 'DailyWeatherItem.dart';
@@ -45,87 +35,62 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.search),
-        onPressed: () {
-          Navigator.pushNamed(context, '/chi');
-        },
-        backgroundColor: Colors.blueAccent,
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          children: [
-            IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/mult');
-              },
-              icon: Icon(Icons.list),
-            )
-          ],
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.search),
+          onPressed: () {
+            Navigator.pushNamed(context, '/chi');
+          },
+          backgroundColor: Colors.blueAccent,
         ),
-      ),
-      body: Container(
-        child: ListView(
-          children: [
-            FutureBuilder<WeatherInfo>(
-                future: _search(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return MainWidget(
-                        location: snapshot.data?.location,
-                        temp: snapshot.data?.temp,
-                        tempMin: snapshot.data?.tempMin,
-                        tempMax: snapshot.data?.tempMax,
-                        weather: snapshot.data?.weather,
-                        humidity: snapshot.data?.humidity,
-                        windSpeed: snapshot.data?.windSpeed);
-                  } else {
-                    return Center(
-                      child: Text(
-                        "LOADING...",
-                        style: TextStyle(fontSize: 30.0, color: Colors.purple),
-                      ),
-                    );
-                  }
-                }),
-            _hourlyForecast(),
-            _dailyForecast(),
-          ],
+        bottomNavigationBar: BottomAppBar(
+          child: Row(
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/mult');
+                },
+                icon: Icon(Icons.list),
+              )
+            ],
+          ),
         ),
-      )
-    );
+        body: Container(
+          child: ListView(
+            children: [
+              FutureBuilder<WeatherInfo>(
+                  future: _search(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return MainWidget(
+                          location: snapshot.data?.location,
+                          temp: snapshot.data?.temp,
+                          tempMin: snapshot.data?.tempMin,
+                          tempMax: snapshot.data?.tempMax,
+                          weather: snapshot.data?.weather,
+                          humidity: snapshot.data?.humidity,
+                          windSpeed: snapshot.data?.windSpeed);
+                    } else {
+                      return Center(
+                        child: Text(
+                          "LOADING...",
+                          style:
+                              TextStyle(fontSize: 30.0, color: Colors.purple),
+                        ),
+                      );
+                    }
+                  }),
+              _hourlyForecast(),
+              _dailyForecast(),
+            ],
+          ),
+        ));
   }
 
   //List view for the hourly forecast.
-  final times = ['12', '1', '2', '3', '4', '5', '6', '7', '8', '9', "10", '11'];
   _hourlyForecast() {
-    /*
-    return Container(
-        height: 100,
-        decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(color: Colors.white),
-            bottom: BorderSide(color: Colors.white),
-          ),
-        ),
-        child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: times.length,
-            itemBuilder: (context, index) {
-              return Container(
-                width: 50,
-                child: Card(
-                  child: Center(
-                    child: Text('${times[index]}'),
-                  ),
-                ),
-              );
-            }));
-         */
-
     return Container(
       height: 130,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         border: Border(
           top: BorderSide(color: Colors.white),
           bottom: BorderSide(color: Colors.white),

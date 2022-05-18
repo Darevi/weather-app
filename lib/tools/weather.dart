@@ -71,8 +71,7 @@ class weathers extends StatelessWidget {
                               text: "${city[index]} ${"  "}",
                             ),
                             TextSpan(
-                              text:
-                                  " ${degrees[index]} ${'°F                                                           '}",
+                              text: " ${degrees[index]} ${'°F'} ",
                             ),
                             WidgetSpan(
                               child: Icon(Icons.cloud, size: 60),
