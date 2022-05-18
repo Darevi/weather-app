@@ -1,6 +1,8 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:flutter/gestures.dart';
+import 'package:mock_weather/Homescreen.dart';
 class weathers extends StatelessWidget {
   final city = ['Seattle', 'Madrid', 'Los Angeles', "Ellensburg"];
   final location;
@@ -46,6 +48,7 @@ class weathers extends StatelessWidget {
       temp3.toInt().toString(),
       temp4.toInt().toString()
     ];
+
     return Container(
 
         // children: [
@@ -69,28 +72,36 @@ class weathers extends StatelessWidget {
                           children: [
                             TextSpan(
                               text: "${city[index]} ${"  "}",
+                              recognizer: new TapGestureRecognizer()..onTap = () => {
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) => HomeScreen()),
+                                ),
+                              },
                             ),
+
                             TextSpan(
                               text:
                                   " ${degrees[index]} ${'°F                                                           '}",
+                              recognizer: new TapGestureRecognizer()..onTap = () => {
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) => HomeScreen()),
+                                ),
+                              },
                             ),
                             WidgetSpan(
                               child: Icon(Icons.cloud, size: 60),
-                            ),
+
+                                )
+
                           ],
+
+
                         ),
                       ),
+
                     ],
                   )
 
-                      /* child: Text(
-
-                    '${city[index] } ${ "  "}'
-                      ' ${ degrees[index]} ${'°F'} '
-                    '${Icons.cloud}',
-                      style: TextStyle(fontSize: 30),
-
-                      textAlign: TextAlign.center),*/
                       ));
             }));
 

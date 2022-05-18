@@ -11,14 +11,14 @@ class LocationScreenState extends State<LocationScreen>{
   late TextEditingController _controller;
   @override
   void initState() {
-    super.initState();
+    //super.initState();
     _controller = TextEditingController();
   }
 
   @override
   void dispose() {
     _controller.dispose();
-    super.dispose();
+    //super.dispose();
   }
 
   @override
