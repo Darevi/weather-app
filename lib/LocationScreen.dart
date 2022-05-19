@@ -117,14 +117,6 @@ class LocationScreen extends StatefulWidget {
 class AutocompleteLocation extends StatelessWidget {
   JsonReader reader = JsonReader();
 
-
-
-  static const List<String> _kOptions = <String>[
-    'aardvark',
-    'bobcat',
-    'chameleon',
-  ];
-
   @override
   Widget build(BuildContext context) {
 
