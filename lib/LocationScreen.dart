@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors
+import 'jsonReader.dart';
 
 import 'package:flutter/material.dart';
 
@@ -25,6 +26,7 @@ class LocationScreenState extends State<LocationScreen>{
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
+
         slivers: [
           SliverAppBar(
             floating: true,
@@ -86,9 +88,7 @@ class LocationScreenState extends State<LocationScreen>{
               Container(
                 height: 400,
                 child: Center(
-                  child: Text(
-                    'This is where the weather will be',
-                  ),
+                  child: AutocompleteLocation(),
                 ),
               ),
               Container(
@@ -112,5 +112,36 @@ class LocationScreen extends StatefulWidget {
     return LocationScreenState();
     throw UnimplementedError();
   }
+}
 
+class AutocompleteLocation extends StatelessWidget {
+  JsonReader reader = JsonReader();
+
+
+
+  static const List<String> _kOptions = <String>[
+    'aardvark',
+    'bobcat',
+    'chameleon',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+
+    reader.readJson();
+
+    return Autocomplete<String>(
+      optionsBuilder: (TextEditingValue textEditingValue) {
+        if (textEditingValue.text == '') {
+          return const Iterable<String>.empty();
+        }
+        return reader.locationStringList.where((String option) {
+          return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
+        });
+      },
+      onSelected: (String selection) {
+        debugPrint('You just selected $selection');
+      },
+    );
+  }
 }
