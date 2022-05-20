@@ -74,7 +74,7 @@ class weathers extends StatelessWidget {
                               text: "${city[index]} ${"  "}",
                               recognizer: new TapGestureRecognizer()..onTap = () => {
                                 Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) => HomeScreen()),
+                                    builder: (context) => HomeScreen(lon: '', lat: '', curr: false)),
                                 ),
                               },
                             ),
@@ -84,7 +84,7 @@ class weathers extends StatelessWidget {
                                   " ${degrees[index]} ${'°F                                                           '}",
                               recognizer: new TapGestureRecognizer()..onTap = () => {
                                 Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) => HomeScreen()),
+                                    builder: (context) => HomeScreen(lon: '', lat: '', curr: false)),
                                 ),
                               },
                             ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'LocationScreen.dart';
 import 'Homescreen.dart';
 import 'multiple.dart';
+import 'tools/current_location.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (_)=> HomeScreen(),
+        '/': (_)=> HomeScreen(lon: '46.9965', lat: '-120.5478', curr: true),
         '/chi': (_)=> LocationScreen(),
         '/mult': (_) => Multi(),
       },

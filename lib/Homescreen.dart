@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, no_logic_in_create_state
 
 import 'dart:convert';
 //import 'dart:js';
@@ -23,14 +23,25 @@ import 'tools/current_location.dart';
 import 'HourlyForecastList.dart';
 
 class HomeScreen extends StatefulWidget {
+  
+  String lon;
+  String lat;
+  bool curr;
+  HomeScreen({Key? key, required this.lon, required this.lat, required this.curr }) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
-    return HomeScreenState();
+    return HomeScreenState(lon, lat, curr);
   }
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  String cityName = 'Seattle';
+ 
+  String lon;
+  String lat;
+  bool curr;
+  HomeScreenState(this.lon, this.lat, this.curr);
+  
   bool isLoading = false;
   late DailyWeatherData weatherData;
   DailyForecastData? forecast;
@@ -39,7 +50,7 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    loadWeather();
+    loadWeather(lon, lat, curr);
   }
 
   @override
@@ -68,7 +79,7 @@ class HomeScreenState extends State<HomeScreen> {
         child: ListView(
           children: [
             FutureBuilder<WeatherInfo>(
-                future: _search(),
+                future: _search(lon, lat, curr),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return MainWidget(
@@ -161,26 +172,30 @@ class HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Future<WeatherInfo> _search() {
-    return WeatherInfo.fetchWeather(cityName);
+  Future<WeatherInfo> _search(String lon, String lat, bool curr) {
+    return WeatherInfo.fetchWeather(lon, lat, curr);
   }
 
 //Method for the Daily Forecast
-  loadWeather() async {
+  loadWeather(String long, String lat, bool curr) async {
     setState(() {
       isLoading = true;
     });
-    List<String> curr = await CurrentLocation.updatePosition()
-        as List<String>; //Get the current location of the user
-    String lat = curr[0];
-    String lon = curr[1];
-    //final lat = 47.608013;
-    //final lon = -122.335167;
+    String latitude = '';
+    String longitude = '';
+    if(curr == true) {
+      List<String> currPosition = await CurrentLocation.updatePosition() as List<String>; //Get the current location of the user
+      latitude = currPosition[0];
+      longitude = currPosition[1];
+    }else {
+      latitude = lon;
+      longitude = lat;
+    }
     final key = "ffa47a3d1aa0f5e91ff7fd8cb2356002";
     //final forecastURL =
     //"https://api.openweathermap.org/data/2.5/forecast?APPID=$key&lat=${lat.toString()}&lon=${lon.toString()}";
     final forecastURL =
-        'https://api.openweathermap.org/data/2.5/onecall?lat=${lat.toString()}&lon=${lon.toString()}&exclude=minutely&appid=$key&units=imperial';
+        'https://api.openweathermap.org/data/2.5/onecall?lat=${latitude.toString()}&lon=${longitude.toString()}&exclude=minutely&appid=$key&units=imperial';
     final forecastResponse = await http.get(Uri.parse(forecastURL));
 
     if (forecastResponse.statusCode == 200) {
