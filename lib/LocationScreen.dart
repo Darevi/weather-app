@@ -19,7 +19,7 @@ class LocationScreenState extends State<LocationScreen>{
   @override
   void dispose() {
     _controller.dispose();
-    //super.dispose();
+    super.dispose();
   }
 
   @override
