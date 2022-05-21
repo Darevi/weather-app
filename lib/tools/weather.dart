@@ -1,5 +1,8 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import '../Homescreen.dart';
 
 class weathers extends StatelessWidget {
   final city = ['Seattle', 'Madrid', 'Los Angeles', "Ellensburg"];
@@ -69,9 +72,32 @@ class weathers extends StatelessWidget {
                           children: [
                             TextSpan(
                               text: "${city[index]} ${"  "}",
+                              recognizer: new TapGestureRecognizer()
+                                ..onTap = () => {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => HomeScreen(
+                                                lon: '46.9965',
+                                                lat: '-120.5478',
+                                                curr: false)), //Set to false
+                                      ),
+                                    },
                             ),
                             TextSpan(
-                              text: " ${degrees[index]} ${'°F'} ",
+                              text:
+                                  " ${degrees[index]} ${'°F                                                           '}",
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () => {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => HomeScreen(
+                                                lon: '46.9965',
+                                                lat: '-120.5478',
+                                                curr: false)), //Set to false
+                                      ),
+                                    },
                             ),
                             const WidgetSpan(
                               child: Icon(Icons.cloud, size: 60),

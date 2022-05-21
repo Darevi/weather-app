@@ -38,14 +38,20 @@ class WeatherInfo {
         windSpeed: json['wind']['speed']);
   }
   //Network request to the weather API given the name of the city as a parameter.
-  static Future<WeatherInfo> fetchWeather(city) async {
+  static Future<WeatherInfo> fetchWeather(String lon, String lat, bool curr) async {
+    String latitude = '';
+    String longitude = '';
+    if(curr == true) {
+      List<String> currPosition = await CurrentLocation.updatePosition() as List<String>; //Get the current location of the user
+      latitude = currPosition[0];
+      longitude = currPosition[1];
+      log(currPosition[2]); //FOR DEBUGGING Print out the address information gathered by the app to the DegubConsole FOR DEBUGGING
+    }else {
+      latitude = lon;
+      longitude = lat;
+    }
     
-    List<String> curr = await CurrentLocation.updatePosition() as List<String>; //Get the current location of the user
-    String latitude = curr[0];
-    String longitude = curr[1];
-    log(curr[2]); //FOR DEBUGGING Print out the address information gathered by the app to the DegubConsole FOR DEBUGGING
-    
-    final cityName = city; //Hardcoded city name to search the API with
+    //final cityName = city; //Hardcoded city name to search the API with
     final apiKey = "01787ca7c37221e8632a2dab11901f4c";
     //final requestUrl = "https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}"; //API CALL BY CITY NAME
 
