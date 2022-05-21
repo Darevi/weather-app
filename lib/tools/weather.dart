@@ -62,7 +62,7 @@ class weathers extends StatelessWidget {
                     children: [
                       RichText(
                         text: TextSpan(
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 40,
                             color: Colors.white,
                           ),
@@ -73,7 +73,7 @@ class weathers extends StatelessWidget {
                             TextSpan(
                               text: " ${degrees[index]} ${'°F'} ",
                             ),
-                            WidgetSpan(
+                            const WidgetSpan(
                               child: Icon(Icons.cloud, size: 60),
                             ),
                           ],
