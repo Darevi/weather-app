@@ -12,6 +12,10 @@ class Location {
 
   Location(this.city, this.state, this.country, this.lat, this.lon);
 
+  String createString() {
+    return "";
+  }
+
   Location.fromJson(dynamic json)
       : city = json['name'] as String,
         state = json['state_name'] as String,
