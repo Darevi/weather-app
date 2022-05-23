@@ -41,13 +41,17 @@ class LocationScreenState extends State<LocationScreen>{
             title: Text('Search for a location:'),
             actions: [
               IconButton(
-                icon: Icon(Icons.my_location),//to get current location
+                icon: Icon(Icons.my_location),
+                tooltip: 'search for your current location',
+                //to get current location
                 onPressed: () {
                   //will put in code for getting the current location
                 },
               ),
             ],
             bottom: AppBar(
+              //back button gone
+              automaticallyImplyLeading: false,
               title: Container(
                 width: double.infinity,
                 height: 40,
