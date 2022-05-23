@@ -101,10 +101,20 @@ class multiple extends State<Multi> {
                     weather: snapshot.data?.weather);
               } else {
                 return Center(
-                  child: Text(
-                    "LOADING...",
-                    style: TextStyle(fontSize: 30.0, color: Colors.purple),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Loading...",
+                        style: TextStyle(fontSize: 32.0, color: Colors.purple),
+                      ),
+                      CircularProgressIndicator(),
+                      SizedBox(
+                        height: 15,
+                      ),
+                    ],
                   ),
+
                 );
               }
             }));
