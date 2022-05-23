@@ -1,5 +1,8 @@
 // ignore_for_file: prefer_const_constructors
+import 'package:mock_weather/Homescreen.dart';
+
 import 'jsonReader.dart';
+import 'locations.dart';
 
 import 'package:flutter/material.dart';
 
@@ -132,8 +135,37 @@ class AutocompleteLocation extends StatelessWidget {
         });
       },
       onSelected: (String selection) {
+        Location selectedLoc = searchLoc(reader.locationList, selection);
         debugPrint('You just selected $selection');
+        debugPrint('Lat and Long are ' + selectedLoc.lat.toString() + ', ' + selectedLoc.lon.toString());
+        HomeScreen(lon: selectedLoc.lon.toString(), lat: selectedLoc.lat.toString(), curr: false);
       },
     );
+  }
+
+  Location searchLoc(List<Location> locationList, String loc) {
+    int start = 0;
+    int end = loc.indexOf(',', start);
+
+    String city = loc.substring(start,end);
+
+    start = end + 2;
+    end = loc.indexOf(',', start);
+
+    String state = loc.substring(start, end);
+
+    start = end + 2;
+
+    String country = loc.substring(start);
+
+
+    for (int i = 0; i < locationList.length; i++) {
+      if (locationList[i].city == city && locationList[i].state == state && locationList[i].country == country) {
+        return locationList[i];
+      }
+    }
+
+    debugPrint("no location found, this shouldn't happen.");
+    return locationList[0];
   }
 }
