@@ -1,11 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter/gestures.dart';
+
 import 'package:mock_weather/Homescreen.dart';
 class weathers extends StatelessWidget {
   final city = ['Seattle', 'Madrid', 'Los Angeles', "Ellensburg"];
   final location;
+  final longitudes = ['47.608013', '40.416775', '34.052235','6.9965144'];
+  final latitudes = ['-122.335167','-3.703790','-118.243398','-120.5478474'];
   var temp;
   var temp2;
   var temp3;
@@ -74,7 +76,7 @@ class weathers extends StatelessWidget {
                               text: "${city[index]} ${"  "}",
                               recognizer: new TapGestureRecognizer()..onTap = () => {
                                 Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) => HomeScreen(lon: '46.9965', lat: '-120.5478', curr: false)), //Set to false
+                                    builder: (context) => HomeScreen(lon: '${longitudes[index]}', lat: '${latitudes[index]}', curr: false)), //Set to false
                                 ),
                               },
                             ),
