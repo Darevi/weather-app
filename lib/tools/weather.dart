@@ -1,13 +1,16 @@
+import 'dart:convert';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+//import 'package:geolocator/geolocator.dart';
+//import '../tools/DailyForecastData.dart';
 
 import 'package:mock_weather/Homescreen.dart';
 class weathers extends StatelessWidget {
   final city = ['Seattle', 'Madrid', 'Los Angeles', "Ellensburg"];
   final location;
-  final longitudes = ['47.608013', '40.416775', '34.052235','6.9965144'];
-  final latitudes = ['-122.335167','-3.703790','-118.243398','-120.5478474'];
+  final longitudes = ['47.608013', '40.416775', '34.052235','46.9965'];
+  final latitudes = ['-122.335167','-3.703790','-118.243398','-120.5478'];
   var temp;
   var temp2;
   var temp3;
@@ -22,7 +25,38 @@ class weathers extends StatelessWidget {
     required this.temp,
     required this.weather,
   });
+  var latitude = "";
+  var longitude = "";
 
+
+ /* Future<Position> getLocation() async {
+    var currentLocation;
+    try {
+      currentLocation = await geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+    } catch (e) {
+      currentLocation = null;
+    }
+    return currentLocation;
+  }
+
+
+  void calculateDistance() async {
+
+    getLocation().then((position) {
+      userLocation = position;
+    });
+
+    final double myPositionLat =  userLocation.latitude;
+    final double myPositionLong = userLocation.longitude;
+
+    final double TPLat = 51.5148731;
+    final double TPLong = -0.1923663;
+    final distanceInMetres = await Geolocator().distanceBetween(myPositionLat, myPositionLong, TPLat, TPLong)/1000;
+
+    print(distanceInMetres);
+
+  }*/
   @override
   Widget build(BuildContext context) {
     //Decide the Icon to be displayed with the weather description

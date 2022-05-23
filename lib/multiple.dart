@@ -37,8 +37,8 @@ Future<WeatherInfo> fetchWeather() async {
 
 class WeatherInfo {
   final city = ['Seattle', 'Madrid', 'Los Angeles', "Ellensburg"];
-  final longitudes = ['47.608013', '40.416775', '-118.243398','-120.5478474'];
-  final latitudes = ['-122.335167','-3.703790','34.052235','6.9965144'];
+  final longitudes = ['47.608013', '40.416775', '-118.243398','46.9965'];
+  final latitudes = ['-122.335167','-3.703790','34.052235','-120.5478'];
   final temp4;
   final temp3;
   final temp2;
