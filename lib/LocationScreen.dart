@@ -164,6 +164,7 @@ class AutocompleteLocation extends StatelessWidget {
   }
 
   Location searchLoc(List<Location> locationList, String loc) {
+    // turns loc string into substrings with city, state, country
     int start = 0;
     int end = loc.indexOf(',', start);
 
@@ -178,13 +179,15 @@ class AutocompleteLocation extends StatelessWidget {
 
     String country = loc.substring(start);
 
-
+    // compares city, state, country substrings with counter parts in locationList
     for (int i = 0; i < locationList.length; i++) {
       if (locationList[i].city == city && locationList[i].state == state && locationList[i].country == country) {
+        // returns specific location if successful
         return locationList[i];
       }
     }
 
+    // this should hopefully never happen
     debugPrint("no location found, this shouldn't happen.");
     return locationList[0];
   }
