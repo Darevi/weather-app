@@ -12,22 +12,6 @@ import 'package:flutter/material.dart';
 String locToSearch = " ";
 
 class LocationScreenState extends State<LocationScreen>{
-  late TextEditingController _controller;
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-  @override
-  void clearText(){
-      _controller.clear();
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +24,7 @@ class LocationScreenState extends State<LocationScreen>{
             pinned: true,
             snap: false,
             centerTitle: false,
+
             //top title
             title: Text('Search for a location:'),
             actions: [
@@ -57,12 +42,16 @@ class LocationScreenState extends State<LocationScreen>{
             bottom: AppBar(
               //back button gone
               automaticallyImplyLeading: false,
+
               title: Container(
                 width: double.infinity,
                 height: 40,
                 color: Colors.white,
+
                 child: Center(
                   //this is the search bar displayed code
+                  child: AutocompleteLocation(),
+                  /*
                   child: TextField(
                     style: TextStyle(fontSize: 16.0, color: Colors.black),
                     decoration: InputDecoration(
@@ -102,7 +91,7 @@ class LocationScreenState extends State<LocationScreen>{
                       );
 
                     },
-                  ),
+                  ),*/
                 ),
               ),
             ),
@@ -113,14 +102,17 @@ class LocationScreenState extends State<LocationScreen>{
               Container(
                 height: 400,
                 child: Center(
-                  child: AutocompleteLocation(),
+                  //child: AutocompleteLocation(),
                 ),
               ),
+              /*
               Container(
                 height: 1000,
                 color: Colors.blueGrey,
               ),
+            */
             ]),
+
           ),
         ],
       ),
@@ -141,13 +133,53 @@ class LocationScreen extends StatefulWidget {
 
 class AutocompleteLocation extends StatelessWidget {
   JsonReader reader = JsonReader();
+  late TextEditingController fieldTextEditingController;
 
+  void clearText(){
+    fieldTextEditingController.clear();
+  }
   @override
   Widget build(BuildContext context) {
 
     reader.readJson();
 
     return Autocomplete<String>(
+      fieldViewBuilder: (
+          BuildContext context,
+          TextEditingController fieldTextEditingController,
+          FocusNode fieldFocusNode,
+          VoidCallback onFieldSubmitted,
+
+          ){
+
+        return Container(
+            width: double.infinity,
+            height: 40,
+            color: Colors.white,
+        child: TextField(
+
+          controller: fieldTextEditingController,
+          focusNode: fieldFocusNode,
+          style:  const TextStyle(fontSize: 16.0, color: Colors.black),
+          decoration: InputDecoration(
+              hintText: 'Insert city or zip code',
+              prefixIcon: Icon(Icons.search),
+              suffixIcon: IconButton(
+                icon: Icon(Icons.clear),
+                onPressed: clearText,
+              )//(Icons.clear)
+          ),
+        )
+        );
+      },
+      onSelected: (String selection) {
+        Location selectedLoc = searchLoc(reader.locationList, selection);
+        debugPrint('You just selected $selection');
+        debugPrint('Lat and Long are ' + selectedLoc.lat.toString() + ', ' + selectedLoc.lon.toString());
+        Navigator.push(context, MaterialPageRoute( // Go to the homescreen and search current location
+            builder: (context) => HomeScreen(lon: selectedLoc.lat.toString(), lat: selectedLoc.lon.toString(), curr: false)),
+        );
+      },
       optionsBuilder: (TextEditingValue textEditingValue) {
         if (textEditingValue.text == '') {
           return const Iterable<String>.empty();
@@ -156,14 +188,7 @@ class AutocompleteLocation extends StatelessWidget {
           return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
         });
       },
-      onSelected: (String selection) {
-        Location selectedLoc = searchLoc(reader.locationList, selection);
-        debugPrint('You just selected $selection');
-        debugPrint('Lat and Long are ' + selectedLoc.lat.toString() + ', ' + selectedLoc.lon.toString());
-        Navigator.push(context, MaterialPageRoute( // Go to the homescreen and search current location
-          builder: (context) => HomeScreen(lon: selectedLoc.lat.toString(), lat: selectedLoc.lon.toString(), curr: false)),
-        );
-      },
+
     );
   }
 
