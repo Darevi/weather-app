@@ -160,7 +160,7 @@ class AutocompleteLocation extends StatelessWidget {
         Location selectedLoc = searchLoc(reader.locationList, selection);
         debugPrint('You just selected $selection');
         debugPrint('Lat and Long are ' + selectedLoc.lat.toString() + ', ' + selectedLoc.lon.toString());
-        Navigator.push(context, MaterialPageRoute(
+        Navigator.push(context, MaterialPageRoute( // Go to the homescreen and search current location
           builder: (context) => HomeScreen(lon: selectedLoc.lat.toString(), lat: selectedLoc.lon.toString(), curr: false)),
         );
       },
