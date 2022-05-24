@@ -51,47 +51,6 @@ class LocationScreenState extends State<LocationScreen>{
                 child: Center(
                   //this is the search bar displayed code
                   child: AutocompleteLocation(),
-                  /*
-                  child: TextField(
-                    style: TextStyle(fontSize: 16.0, color: Colors.black),
-                    decoration: InputDecoration(
-                        hintText: 'Insert city or zip code',
-
-                        prefixIcon: Icon(Icons.search),
-                      suffixIcon: IconButton(
-                        icon: Icon(Icons.clear),
-                        onPressed: clearText,
-                      )//(Icons.clear),//can work in functionality to clear text field
-                    ),
-                    controller: _controller,
-                    //this is just here for now to see pop up messaging and
-                    //show access to the search bar
-                    //we could maybe use pop up messaging for a location error
-                    onSubmitted: (String value) async{
-                      locToSearch = value;
-                      await showDialog<void>(
-                        context: context,
-                        builder: (BuildContext context){
-                          return AlertDialog(
-                            title: const Text('Thanks!'),
-                            content: Text(
-                                'You are searching for this location: "$value"'
-                            ),
-                            //this is the button on pop up message
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: (){
-                                  Navigator.pop(context);
-                                },
-                                child: const Text("Ok"),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-
-                    },
-                  ),*/
                 ),
               ),
             ),
@@ -105,12 +64,6 @@ class LocationScreenState extends State<LocationScreen>{
                   //child: AutocompleteLocation(),
                 ),
               ),
-              /*
-              Container(
-                height: 1000,
-                color: Colors.blueGrey,
-              ),
-            */
             ]),
 
           ),
