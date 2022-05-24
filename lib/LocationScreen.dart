@@ -47,8 +47,10 @@ class LocationScreenState extends State<LocationScreen>{
                 icon: Icon(Icons.my_location),
                 tooltip: 'search for your current location',
                 //to get current location
-                onPressed: () {
-                  //will put in code for getting the current location
+                onPressed: () { //When the my_location icon is tapped
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => HomeScreen(lon: '', lat: '', curr: true)), //Because curr is set to true it will get current location
+                  );
                 },
               ),
             ],
