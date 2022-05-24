@@ -15,7 +15,7 @@ class LocationScreenState extends State<LocationScreen>{
   late TextEditingController _controller;
   @override
   void initState() {
-    //super.initState();
+    super.initState();
     _controller = TextEditingController();
   }
 
@@ -24,7 +24,10 @@ class LocationScreenState extends State<LocationScreen>{
     _controller.dispose();
     super.dispose();
   }
-
+  @override
+  void clearText(){
+      _controller.clear();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,8 +65,12 @@ class LocationScreenState extends State<LocationScreen>{
                     style: TextStyle(fontSize: 16.0, color: Colors.black),
                     decoration: InputDecoration(
                         hintText: 'Insert city or zip code',
+
                         prefixIcon: Icon(Icons.search),
-                      suffixIcon: Icon(Icons.clear),//can work in functionality to clear text field
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.clear),
+                        onPressed: clearText,
+                      )//(Icons.clear),//can work in functionality to clear text field
                     ),
                     controller: _controller,
                     //this is just here for now to see pop up messaging and
