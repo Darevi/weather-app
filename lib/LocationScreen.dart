@@ -15,7 +15,7 @@ class LocationScreenState extends State<LocationScreen>{
   late TextEditingController _controller;
   @override
   void initState() {
-    //super.initState();
+    super.initState();
     _controller = TextEditingController();
   }
 
@@ -24,12 +24,16 @@ class LocationScreenState extends State<LocationScreen>{
     _controller.dispose();
     super.dispose();
   }
-
+  @override
+  void clearText(){
+      _controller.clear();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
-
+        //using sliver app bar for looking nice, usually used for custom scroll view
+        //https://api.flutter.dev/flutter/material/SliverAppBar-class.html
         slivers: [
           SliverAppBar(
             floating: true,
@@ -37,26 +41,41 @@ class LocationScreenState extends State<LocationScreen>{
             snap: false,
             centerTitle: false,
             //top title
-            title: Text('Weather App'),
+            title: Text('Search for a location:'),
             actions: [
               IconButton(
-                icon: Icon(Icons.cloudy_snowing),
-                onPressed: () {},
+                icon: Icon(Icons.my_location),
+                tooltip: 'search for your current location',
+                //to get current location
+                onPressed: () {
+                  //will put in code for getting the current location
+                },
               ),
             ],
             bottom: AppBar(
+              //back button gone
+              automaticallyImplyLeading: false,
               title: Container(
                 width: double.infinity,
                 height: 40,
                 color: Colors.white,
                 child: Center(
+                  //this is the search bar displayed code
                   child: TextField(
                     style: TextStyle(fontSize: 16.0, color: Colors.black),
                     decoration: InputDecoration(
-                        hintText: 'Search a Location',
+                        hintText: 'Insert city or zip code',
+
                         prefixIcon: Icon(Icons.search),
-                        suffixIcon: Icon(Icons.add_location)),
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.clear),
+                        onPressed: clearText,
+                      )//(Icons.clear),//can work in functionality to clear text field
+                    ),
                     controller: _controller,
+                    //this is just here for now to see pop up messaging and
+                    //show access to the search bar
+                    //we could maybe use pop up messaging for a location error
                     onSubmitted: (String value) async{
                       locToSearch = value;
                       await showDialog<void>(
@@ -67,6 +86,7 @@ class LocationScreenState extends State<LocationScreen>{
                             content: Text(
                                 'You are searching for this location: "$value"'
                             ),
+                            //this is the button on pop up message
                             actions: <Widget>[
                               TextButton(
                                 onPressed: (){
