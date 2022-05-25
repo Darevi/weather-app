@@ -92,12 +92,19 @@ class HomeScreenState extends State<HomeScreen> {
                           windSpeed: snapshot.data?.windSpeed);
                     } else {
                       return Center(
-                        child: Text(
-                          "LOADING...",
-                          style:
-                              TextStyle(fontSize: 30.0, color: Colors.purple),
-                        ),
-                      );
+                          child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                            "Loading...",
+                            style: TextStyle(fontSize: 30.0, color: Colors.purple),
+                            ),
+                            CircularProgressIndicator(),
+                            SizedBox(
+                            height: 15,
+                            ),
+                          ],
+                      ));
                     }
                   }),
               _hourlyForecast(),
