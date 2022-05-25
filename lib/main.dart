@@ -3,6 +3,9 @@ import 'LocationScreen.dart';
 import 'Homescreen.dart';
 import 'multiple.dart';
 import 'tools/current_location.dart';
+import 'jsonReader.dart';
+
+JsonReader reader = JsonReader();
 
 void main() {
   runApp(const MyApp());
@@ -13,6 +16,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    reader.readJson();
     return MaterialApp(
       theme: ThemeData(primarySwatch: Colors.blue, brightness: Brightness.dark),
       initialRoute: '/',
