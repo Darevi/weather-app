@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'tools/weather_tile.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_weather_bg_null_safety/flutter_weather_bg.dart';
 
 class MainWidget extends StatelessWidget {
   final location;
