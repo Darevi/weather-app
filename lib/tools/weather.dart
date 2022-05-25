@@ -7,6 +7,8 @@ import '../Homescreen.dart';
 class weathers extends StatelessWidget {
   final city = ['Seattle', 'Madrid', 'Los Angeles', "Ellensburg"];
   final location;
+  final longitudes = ['47.608013', '40.416775', '34.052235', '6.9965144'];
+  final latitudes = ['-122.335167', '-3.703790', '-118.243398', '-120.5478474'];
   var temp;
   var temp2;
   var temp3;
