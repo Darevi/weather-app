@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, no_logic_in_create_state
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, no_logic_in_create_state, prefer_const_literals_to_create_immutables
 
 import 'dart:convert';
 //import 'dart:js';
