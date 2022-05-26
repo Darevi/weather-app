@@ -88,13 +88,17 @@ class MainWidget extends StatelessWidget {
             ],
           ),
         ),
-        Column(
-          children: [
-            WeatherTile(icon: weatherIcon, title: "Weather", subTitle: "${weather.toString()}"),
-            WeatherTile(icon: Icons.water_drop, title: "Humidity", subTitle: "${humidity.toString()}%"),
-            WeatherTile(icon: Icons.air_outlined, title: "Wind Speed", subTitle: "${windSpeed.toInt().toString()} MPH"),
-          ] 
-        )
+        Column(children: [
+          //WeatherTile(icon: weatherIcon, title: "Weather", subTitle: "${weather.toString()}"),
+          WeatherTile(
+              icon: Icons.water_drop,
+              title: "Humidity",
+              subTitle: "${humidity.toString()}%"),
+          WeatherTile(
+              icon: Icons.air_outlined,
+              title: "Wind Speed",
+              subTitle: "${windSpeed.toInt().toString()} MPH"),
+        ])
       ],
     );
   }

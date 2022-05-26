@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:convert';
 
-
+// tiny class for keeping track of locations
 class Location {
   String city;
   String state;
@@ -11,11 +11,4 @@ class Location {
   double lon;
 
   Location(this.city, this.state, this.country, this.lat, this.lon);
-
-  Location.fromJson(dynamic json)
-      : city = json['name'] as String,
-        state = json['state_name'] as String,
-        country = json['county_name'] as String,
-        lat = json['latitude'] as double,
-        lon = json['longitude'] as double;
 }

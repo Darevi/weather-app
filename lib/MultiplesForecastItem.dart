@@ -1,11 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'HourlyForecastData.dart';
 
-class HourlyForecastItem extends StatelessWidget {
-  final HourlyForecastData weather;
+import 'MultiplesForecastData.dart';
 
-  const HourlyForecastItem({Key? key, required this.weather}) : super(key: key);
+class MultiplesForecastItem extends StatelessWidget {
+  final MultiplesForecastData weather;
+
+  const MultiplesForecastItem({Key? key, required this.weather})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +16,9 @@ class HourlyForecastItem extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(children: <Widget>[
-          Text(DateFormat.j().format(weather.time),
-              style: const TextStyle(color: Colors.white, fontSize: 10.0)),
-          Text(weather.condition,
+          Text(weather.location,
+              style: const TextStyle(color: Colors.black, fontSize: 15.0)),
+          Text(weather.weatherCondition,
               style: const TextStyle(color: Colors.black, fontSize: 15.0)),
           Text('${weather.temp.toString()}°F',
               style: const TextStyle(color: Colors.black)),

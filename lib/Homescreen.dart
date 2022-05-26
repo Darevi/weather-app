@@ -23,11 +23,12 @@ import 'tools/current_location.dart';
 import 'HourlyForecastList.dart';
 
 class HomeScreen extends StatefulWidget {
-  
   String lon;
   String lat;
   bool curr;
-  HomeScreen({Key? key, required this.lon, required this.lat, required this.curr }) : super(key: key);
+  HomeScreen(
+      {Key? key, required this.lon, required this.lat, required this.curr})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
@@ -36,12 +37,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
- 
   String lon;
   String lat;
   bool curr;
   HomeScreenState(this.lon, this.lat, this.curr);
-  
+
   bool isLoading = false;
   late DailyWeatherData weatherData;
   DailyForecastData? forecast;
@@ -56,55 +56,55 @@ class HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.search),
-        onPressed: () {
-          Navigator.pushNamed(context, '/chi');
-        },
-        backgroundColor: Colors.blueAccent,
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          children: [
-            IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/mult');
-              },
-              icon: Icon(Icons.list),
-            )
-          ],
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.search),
+          onPressed: () {
+            Navigator.pushNamed(context, '/chi');
+          },
+          backgroundColor: Colors.blueAccent,
         ),
-      ),
-      body: Container(
-        child: ListView(
-          children: [
-            FutureBuilder<WeatherInfo>(
-                future: _search(lon, lat, curr),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return MainWidget(
-                        location: snapshot.data?.location,
-                        temp: snapshot.data?.temp,
-                        tempMin: snapshot.data?.tempMin,
-                        tempMax: snapshot.data?.tempMax,
-                        weather: snapshot.data?.weather,
-                        humidity: snapshot.data?.humidity,
-                        windSpeed: snapshot.data?.windSpeed);
-                  } else {
-                    return Center(
-                      child: Text(
-                        "LOADING...",
-                        style: TextStyle(fontSize: 30.0, color: Colors.purple),
-                      ),
-                    );
-                  }
-                }),
-            _hourlyForecast(),
-            _dailyForecast(),
-          ],
+        bottomNavigationBar: BottomAppBar(
+          child: Row(
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/mult');
+                },
+                icon: Icon(Icons.list),
+              )
+            ],
+          ),
         ),
-      )
-    );
+        body: Container(
+          child: ListView(
+            children: [
+              FutureBuilder<WeatherInfo>(
+                  future: _search(lon, lat, curr),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return MainWidget(
+                          location: snapshot.data?.location,
+                          temp: snapshot.data?.temp,
+                          tempMin: snapshot.data?.tempMin,
+                          tempMax: snapshot.data?.tempMax,
+                          weather: snapshot.data?.weather,
+                          humidity: snapshot.data?.humidity,
+                          windSpeed: snapshot.data?.windSpeed);
+                    } else {
+                      return Center(
+                        child: Text(
+                          "LOADING...",
+                          style:
+                          TextStyle(fontSize: 30.0, color: Colors.purple),
+                        ),
+                      );
+                    }
+                  }),
+              _hourlyForecast(),
+              _dailyForecast(),
+            ],
+          ),
+        ));
   }
 
   //List view for the hourly forecast.
@@ -144,11 +144,11 @@ class HomeScreenState extends State<HomeScreen> {
       ),
       child: hourlyForecast != null
           ? ListView.builder(
-              itemCount: hourlyForecast?.list.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) => HourlyForecastItem(
-                  weather: hourlyForecast?.list.elementAt(index)),
-            )
+        itemCount: hourlyForecast?.list.length,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) => HourlyForecastItem(
+            weather: hourlyForecast?.list.elementAt(index)),
+      )
           : Container(),
     );
   }
@@ -162,11 +162,11 @@ class HomeScreenState extends State<HomeScreen> {
         // ignore: unnecessary_null_comparison
         child: forecast != null
             ? ListView.builder(
-                itemCount: forecast?.list.length,
-                scrollDirection: Axis.vertical,
-                itemBuilder: (context, index) =>
-                    DailyWeatherItem(weather: forecast?.list.elementAt(index)),
-              )
+          itemCount: forecast?.list.length,
+          scrollDirection: Axis.vertical,
+          itemBuilder: (context, index) =>
+              DailyWeatherItem(weather: forecast?.list.elementAt(index)),
+        )
             : Container(),
       ),
     );
@@ -183,11 +183,12 @@ class HomeScreenState extends State<HomeScreen> {
     });
     String latitude = '';
     String longitude = '';
-    if(curr == true) {
-      List<String> currPosition = await CurrentLocation.updatePosition() as List<String>; //Get the current location of the user
+    if (curr == true) {
+      List<String> currPosition = await CurrentLocation.updatePosition()
+      as List<String>; //Get the current location of the user
       latitude = currPosition[0];
       longitude = currPosition[1];
-    }else {
+    } else {
       latitude = lon;
       longitude = lat;
     }
@@ -214,5 +215,5 @@ class HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  //setState(Null Function() param0) {}
+//setState(Null Function() param0) {}
 }
