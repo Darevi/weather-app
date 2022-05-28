@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -48,12 +50,29 @@ class _MultipleState extends State<Multiple> {
           child: FutureBuilder(
             future: _getForecasts(locs),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
-              return ListView.builder(
+              if(snapshot.hasData) {
+                return ListView.builder(
                   itemCount: snapshot.data.length,
                   itemBuilder: (BuildContext context, int index) {
                     return MultiplesForecastItem(
                         weather: snapshot.data.elementAt(index));
                   });
+              }else {
+                return Center(
+                  child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Loading...",
+                         style: TextStyle(fontSize: 30.0, color: Colors.purple),
+                      ),
+                      CircularProgressIndicator(),
+                      SizedBox(
+                        height: 15,
+                      ),
+                    ],
+                  ));
+              }
             },
           ),
         ));
