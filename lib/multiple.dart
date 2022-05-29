@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/gestures.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:mock_weather/MultiplesForecastItem.dart';
@@ -15,7 +14,8 @@ class _MultipleState extends State<Multiple> {
   //List of location(s).
   List<Location> locs = [
     Location(
-        latitude: "47.608013", longitude: "-122.335167", cityName: "Seattle")
+        latitude: "47.608013", longitude: "-122.335167", cityName: "Seattle"),
+
   ];
 
   //Method to iterate through the location list, which makes an API call for each location
@@ -26,7 +26,8 @@ class _MultipleState extends State<Multiple> {
     for (Location l in locations) {
       const apiKey = "01787ca7c37221e8632a2dab11901f4c";
       final requestUrl =
-          "https://api.openweathermap.org/data/2.5/weather?lat=${l.latitude}&lon=${l.longitude}&units=imperial&appid=$apiKey";
+          "https://api.openweathermap.org/data/2.5/weather?lat=${l
+          .latitude}&lon=${l.longitude}&units=imperial&appid=$apiKey";
       final response = await http.get(Uri.parse(requestUrl));
 
       if (response.statusCode == 200) {
@@ -43,18 +44,19 @@ class _MultipleState extends State<Multiple> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Weather'),
-        ),
-        body: Container(
+      appBar: AppBar(
+        title: const Text('Weather'),
+      ),
+      body: Container(
 
-          child: InkWell(
-            onTap: (){
-              Navigator.of(context).push(MaterialPageRoute(builder: (context)=>HomeScreen(lon: "47.608013", lat: "-122.335167", curr: false)));
-            },
+        child: InkWell(
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) =>
+                HomeScreen(lon: "47.608013", lat: "-122.335167", curr: false)));
+          },
 
 
-            child: Card(
+          child: Card(
 
             child: FutureBuilder(
 
@@ -68,15 +70,13 @@ class _MultipleState extends State<Multiple> {
                       return MultiplesForecastItem(
                           weather: snapshot.data.elementAt(index));
                     }
-
-
-                      );
+                );
               },
             ),
           ),
-          ),
         ),
-        );
+      ),
+    );
   }
 }
 

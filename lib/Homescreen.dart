@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, no_logic_in_create_state
+// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, no_logic_in_create_state, prefer_const_literals_to_create_immutables
 
 import 'dart:convert';
 //import 'dart:js';
@@ -92,11 +92,25 @@ class HomeScreenState extends State<HomeScreen> {
                           windSpeed: snapshot.data?.windSpeed);
                     } else {
                       return Center(
+
                         child: Text(
                           "LOADING...",
                           style:
                           TextStyle(fontSize: 30.0, color: Colors.purple),
                         ),
+                      );
+                          child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                            "Loading...",
+                            style: TextStyle(fontSize: 30.0, color: Colors.purple),
+                            ),
+                            CircularProgressIndicator(),
+                            SizedBox(
+                            height: 15,
+                            ),
+                          ],
                       );
                     }
                   }),
@@ -185,7 +199,10 @@ class HomeScreenState extends State<HomeScreen> {
     String longitude = '';
     if (curr == true) {
       List<String> currPosition = await CurrentLocation.updatePosition()
+
       as List<String>; //Get the current location of the user
+
+
       latitude = currPosition[0];
       longitude = currPosition[1];
     } else {

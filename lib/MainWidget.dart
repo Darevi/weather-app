@@ -1,8 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, unnecessary_string_interpolations, must_be_immutable
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'tools/weather_tile.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_weather_bg_null_safety/flutter_weather_bg.dart';
 
 class MainWidget extends StatelessWidget {
   final location;
@@ -12,6 +15,7 @@ class MainWidget extends StatelessWidget {
   var weather;
   var humidity;
   final windSpeed;
+  WeatherType weather_bg = WeatherType.lightSnow;
 
   MainWidget({
     this.location,
@@ -29,14 +33,19 @@ class MainWidget extends StatelessWidget {
     IconData weatherIcon;
     if (weather.contains("clear") || weather.contains("few")) {
       weatherIcon = Icons.wb_sunny_outlined;
+      weather_bg = WeatherType.sunny;
     } else if (weather.contains("thunderstorm")) {
       weatherIcon = FontAwesomeIcons.cloudBolt;
+      weather_bg = WeatherType.thunder;
     } else if (weather.contains("rain") || weather.contains("drizzle")) {
       weatherIcon = FontAwesomeIcons.cloudRain;
+      weather_bg = WeatherType.lightRainy;
     } else if (weather.contains("snow")) {
       weatherIcon = FontAwesomeIcons.snowflake;
+      weather_bg = WeatherType.lightSnow;
     } else {
       weatherIcon = Icons.cloud_outlined;
+      weather_bg = WeatherType.dusty;
     }
 
     //Convert temp from Kelvin to F
@@ -51,42 +60,56 @@ class MainWidget extends StatelessWidget {
           height: MediaQuery.of(context).size.height / 3,
           width: MediaQuery.of(context).size.width,
           color: Colors.grey, //Background
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                  //Name of town
-                  "${location.toString()}",
-                  style:
-                      TextStyle(fontSize: 30.0, fontWeight: FontWeight.w900)),
-              Padding(
-                padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                child: Text(
-                  //Temperature
-                  "${temp.toInt().toString()}\u00B0",
-                  style: TextStyle(
-                      color: Colors.purple,
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.w900),
-                ),
+          child: Stack(
+              children: [
+                WeatherBg(weatherType: weather_bg, width:MediaQuery.of(context).size.width , height: MediaQuery.of(context).size.height / 3),
+                BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
+                  child: InkWell(
+                    child: Center(
+
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          //Name of town
+                            "${location.toString()}",
+                            style:
+                            TextStyle(fontSize: 30.0, fontWeight: FontWeight.w900)),
+                        Padding(
+                          padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                          child: Text(
+                            //Temperature
+                            "${temp.toInt().toString()}\u00B0",
+                            style: TextStyle(
+                                color: Colors.purple,
+                                fontSize: 40.0,
+                                fontWeight: FontWeight.w900),
+                          ),
+                        ),
+                        Text(
+                          "${weather.toString()}",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        Text(
+                          //High and low temps
+                          "High of ${tempMax.toInt().toString()}\u00B0      Low of ${tempMin.toInt().toString()}\u00B0",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
+    ),
+                  )
               ),
-              Text(
-                "${weather.toString()}",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w600),
-              ),
-              Text(
-                //High and low temps
-                "High of ${tempMax.toInt().toString()}\u00B0      Low of ${tempMin.toInt().toString()}\u00B0",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w600),
-              ),
-            ],
-          ),
+    ],
+    )
+
         ),
         Column(children: [
           //WeatherTile(icon: weatherIcon, title: "Weather", subTitle: "${weather.toString()}"),
