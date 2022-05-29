@@ -63,18 +63,6 @@ class HomeScreenState extends State<HomeScreen> {
           },
           backgroundColor: Colors.blueAccent,
         ),
-        bottomNavigationBar: BottomAppBar(
-          child: Row(
-            children: [
-              IconButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/mult');
-                },
-                icon: Icon(Icons.list),
-              )
-            ],
-          ),
-        ),
         body: Container(
           child: ListView(
             children: [

@@ -46,6 +46,13 @@ class MainWidget extends StatelessWidget {
     } else {
       weatherIcon = Icons.cloud_outlined;
       weather_bg = WeatherType.dusty;
+      if(weather.contains("overcast")){
+        weather_bg = WeatherType.overcast;
+      }else if(weather.contains("clouds")){
+        weather_bg = WeatherType.cloudy;
+      }else if(weather.contains("fog")||weather.contains("mist")){
+        weather_bg = WeatherType.foggy;
+      }
     }
 
     //Convert temp from Kelvin to F
@@ -62,20 +69,28 @@ class MainWidget extends StatelessWidget {
           color: Colors.grey, //Background
           child: Stack(
               children: [
-                WeatherBg(weatherType: weather_bg, width:MediaQuery.of(context).size.width , height: MediaQuery.of(context).size.height / 3),
+                WeatherBg(weatherType: weather_bg, width:MediaQuery.of(context).size.width , height: MediaQuery.of(context).size.height / 2),
                 BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 2.5, sigmaY: 2.5),
                   child: InkWell(
                     child: Center(
-
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           //Name of town
+
                             "${location.toString()}",
                             style:
-                            TextStyle(fontSize: 30.0, fontWeight: FontWeight.w900)),
+                            TextStyle(fontSize: 30.0, fontWeight: FontWeight.w900,
+                                shadows: [
+                                Shadow(
+                                offset: Offset(2.0, 2.0), //position of shadow
+                                blurRadius: 6.0, //blur intensity of shadow
+                                color: Colors.black.withOpacity(0.8), //color of shadow with opacity
+                                ),]
+                            )
+                        ),
                         Padding(
                           padding: EdgeInsets.only(top: 10.0, bottom: 10.0),
                           child: Text(
@@ -84,7 +99,8 @@ class MainWidget extends StatelessWidget {
                             style: TextStyle(
                                 color: Colors.purple,
                                 fontSize: 40.0,
-                                fontWeight: FontWeight.w900),
+                                fontWeight: FontWeight.w900,
+                                ),
                           ),
                         ),
                         Text(
@@ -92,7 +108,14 @@ class MainWidget extends StatelessWidget {
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 20.0,
-                              fontWeight: FontWeight.w600),
+                              fontWeight: FontWeight.w600,
+                              shadows: [
+                              Shadow(
+                                offset: Offset(2.0, 2.0), //position of shadow
+                                blurRadius: 6.0, //blur intensity of shadow
+                                color: Colors.black.withOpacity(0.8), //color of shadow with opacity
+                              ),]
+                          ),
                         ),
                         Text(
                           //High and low temps
@@ -100,7 +123,14 @@ class MainWidget extends StatelessWidget {
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 14.0,
-                              fontWeight: FontWeight.w600),
+                              fontWeight: FontWeight.w600,
+                              shadows: [
+                                  Shadow(
+                                  offset: Offset(2.0, 2.0), //position of shadow
+                                  blurRadius: 6.0, //blur intensity of shadow
+                                  color: Colors.black.withOpacity(0.8), //color of shadow with opacity
+                                  ),]
+                          ),
                         ),
                       ],
                     ),

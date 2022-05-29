@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (_) => HomeScreen(lon: '46.9965', lat: '-120.5478', curr: false),
         '/chi': (_) => LocationScreen(),
-        '/mult': (_) => Multiple(),
+        //'/mult': (_) => Multiple(),
       },
     );
   }

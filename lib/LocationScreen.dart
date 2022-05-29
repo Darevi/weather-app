@@ -1,4 +1,6 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+import 'dart:io';
+
 import 'package:mock_weather/Homescreen.dart';
 
 import 'jsonReader.dart';
@@ -7,6 +9,12 @@ import 'locations.dart';
 import 'main.dart';
 
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+import 'package:mock_weather/MultiplesForecastItem.dart';
+import 'MultiplesForecastData.dart';
+import 'multiple.dart';
 
 // hello there
 //theoretically I think this is public and
@@ -14,6 +22,40 @@ import 'package:flutter/material.dart';
 String locToSearch = " ";
 
 class LocationScreenState extends State<LocationScreen>{
+  List<Location> locs = [
+    Location(
+        "Seattle", "", "", double.parse("47.608013"), double.parse("-122.335167")), Location(
+        "Seattle", "", "", double.parse("47.608013"), double.parse("-122.335167")), Location(
+        "Seattle", "", "", double.parse("47.608013"), double.parse("-122.335167")), Location(
+        "Seattle", "", "", double.parse("47.608013"), double.parse("-122.335167")), Location(
+        "Seattle", "", "", double.parse("47.608013"), double.parse("-122.335167")), Location(
+        "Seattle", "", "", double.parse("47.608013"), double.parse("-122.335167")), Location(
+        "Seattle", "", "", double.parse("47.608013"), double.parse("-122.335167")), Location(
+        "Seattle", "", "", double.parse("47.608013"), double.parse("-122.335167")), Location(
+        "Seattle", "", "", double.parse("47.608013"), double.parse("-122.335167"))
+  ];
+
+  static Future<List<MultiplesForecastData>> _getForecasts(
+      List<Location> locations) async {
+    List<MultiplesForecastData> forecasts = [];
+    for (Location l in locations) {
+      const apiKey = "01787ca7c37221e8632a2dab11901f4c";
+      final requestUrl =
+          "https://api.openweathermap.org/data/2.5/weather?lat=${l.lat}&lon=${l.lon}&units=imperial&appid=$apiKey";
+      final response = await http.get(Uri.parse(requestUrl));
+
+      if (response.statusCode == 200) {
+        MultiplesForecastData newForecast =
+            MultiplesForecastData.fromJson(jsonDecode(response.body));
+        forecasts.add(newForecast);
+      } else {
+        throw Exception("Error loading request URL info");
+      }
+    }
+    return forecasts;
+  }
+
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,6 +83,7 @@ class LocationScreenState extends State<LocationScreen>{
                 },
               ),
             ],
+            
             bottom: AppBar(
               //back button gone
               automaticallyImplyLeading: false,
@@ -57,12 +100,41 @@ class LocationScreenState extends State<LocationScreen>{
               ),
             ),
           ),
+          
           // Other Sliver Widgets
           SliverList(
             delegate: SliverChildListDelegate([
               Container(
-                height: 400,
-                child: Center(
+                height: MediaQuery.of(context).size.height,
+                //color: Colors.dark,
+                child: FutureBuilder(
+                  future: _getForecasts(locs),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if(snapshot.hasData) {
+                      return ListView.builder(
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return MultiplesForecastItem(
+                              weather: snapshot.data.elementAt(index));
+                        });
+                    }else {
+                      return Center(
+                        child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Loading...",
+                              style: TextStyle(fontSize: 30.0, color: Colors.purple),
+                            ),
+                            CircularProgressIndicator(),
+                            SizedBox(
+                              height: 15,
+                            ),
+                          ],
+                        )
+                      );
+                    }
+                  },
                   //child: AutocompleteLocation(),
                 ),
               ),
@@ -176,5 +248,5 @@ class AutocompleteLocation extends StatelessWidget {
     // this should hopefully never happen
     debugPrint("no location found, this shouldn't happen.");
     return locationList[0];
-  }
+  } 
 }
