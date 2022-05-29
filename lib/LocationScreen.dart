@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, no_logic_in_create_state, dead_code, use_key_in_widget_constructors, must_be_immutable, prefer_const_declarations
 import 'dart:io';
 
 import 'package:mock_weather/Homescreen.dart';
@@ -14,25 +14,37 @@ import 'package:flutter/material.dart';
 import 'package:mock_weather/MultiplesForecastItem.dart';
 import 'MultiplesForecastData.dart';
 import 'multiple.dart';
+import 'tools/current_location.dart';
 
 // hello there
 //theoretically I think this is public and
 //can be accessed from anywhere in the app
 String locToSearch = " ";
 
-class LocationScreenState extends State<LocationScreen>{
-  List<Location> locs = [
-    Location(
-        "Seattle", "", "", double.parse("47.608013"), double.parse("-122.335167")), Location(
-        "Seattle", "", "", double.parse("47.608013"), double.parse("-122.335167")), Location(
-        "Seattle", "", "", double.parse("47.608013"), double.parse("-122.335167")), Location(
-        "Seattle", "", "", double.parse("47.608013"), double.parse("-122.335167")), Location(
-        "Seattle", "", "", double.parse("47.608013"), double.parse("-122.335167")), Location(
-        "Seattle", "", "", double.parse("47.608013"), double.parse("-122.335167")), Location(
-        "Seattle", "", "", double.parse("47.608013"), double.parse("-122.335167")), Location(
-        "Seattle", "", "", double.parse("47.608013"), double.parse("-122.335167")), Location(
-        "Seattle", "", "", double.parse("47.608013"), double.parse("-122.335167"))
-  ];
+class LocationScreenState extends State<LocationScreen> {
+
+  getCityName(String latitude, String longitude) async {
+    final apiKey = "01787ca7c37221e8632a2dab11901f4c";
+    final requestUrl = "https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}";
+    
+    final response = await http.get(Uri.parse(requestUrl));
+
+    if(response.statusCode == 200) {
+      var data = json.decode(response.body);
+      return data['name'];
+    }else {
+      throw Exception("Error loading request URL info");
+    }
+  }
+
+  currWeather() async {
+    List <String> currData = await CurrentLocation.updatePosition()
+      as List<String>;
+    String cityName = await getCityName(currData[0], currData[1]);
+    locs.add(Location(cityName, "", "", double.parse(currData[0]), double.parse(currData[1])));
+  }
+  static List<Location> locs = [Location("New York", "", "", 40.7128, -74.0060), Location("London", "", "", 51.5072, -0.1276), 
+                         Location("Tokyo", "", "", 35.6762, 139.6503)];
 
   static Future<List<MultiplesForecastData>> _getForecasts(
       List<Location> locations) async {
@@ -103,7 +115,7 @@ class LocationScreenState extends State<LocationScreen>{
           // Other Sliver Widgets
           SliverList(
             delegate: SliverChildListDelegate([
-              Container(
+              Container( //This container contains the list of different cities
                 height: MediaQuery.of(context).size.height,
                 //color: Colors.dark,
                 child: FutureBuilder(
@@ -199,9 +211,23 @@ class AutocompleteLocation extends StatelessWidget {
         Location selectedLoc = searchLoc(reader.locationList, selection);
         debugPrint('You just selected $selection');
         debugPrint('Lat and Long are ' + selectedLoc.lat.toString() + ', ' + selectedLoc.lon.toString());
-        Navigator.push(context, MaterialPageRoute( // Go to the homescreen and search current location
-            builder: (context) => HomeScreen(lon: selectedLoc.lat.toString(), lat: selectedLoc.lon.toString(), curr: false)),
-        );
+
+        //Pop up dialog box to prompt user to save their search to the locations list
+        showDialog(context: context, builder: (context) => AlertDialog(
+          title: Text('Add this location?'),
+          content: Text('Would you like to add this locaiton to your saved list of locations?'),
+          actions: [
+            TextButton(
+              child: Text('NO'),
+              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: 
+                        (context) => HomeScreen(lon: selectedLoc.lat.toString(), lat: selectedLoc.lon.toString(), curr: false)))),
+            TextButton(
+              child: Text('YES'),
+              onPressed://              !!!!!THIS IS WHERE THE CODE TO ADD TO LOCATIONS LIST WILL GO!!!!!
+                        () => Navigator.push(context, MaterialPageRoute(builder: 
+                        (context) => HomeScreen(lon: selectedLoc.lat.toString(), lat: selectedLoc.lon.toString(), curr: false))))
+          ],
+        ));
       },
       optionsBuilder: (TextEditingValue textEditingValue) {
         if (textEditingValue.text == '') {
