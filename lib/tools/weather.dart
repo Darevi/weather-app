@@ -53,9 +53,9 @@ class weathers extends StatelessWidget {
     ];
     return Container(
 
-        // children: [
+      // children: [
 
-        // Expanded(
+      // Expanded(
         child: ListView.builder(
             scrollDirection: Axis.vertical,
             itemCount: city.length,
@@ -64,18 +64,18 @@ class weathers extends StatelessWidget {
                   height: 170,
                   child: Card(
                       child: Column(
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          style: const TextStyle(
-                            fontSize: 40,
-                            color: Colors.white,
-                          ),
-                          children: [
-                            TextSpan(
-                              text: "${city[index]} ${"  "}",
-                              recognizer: new TapGestureRecognizer()
-                                ..onTap = () => {
+                        children: [
+                          RichText(
+                            text: TextSpan(
+                              style: const TextStyle(
+                                fontSize: 40,
+                                color: Colors.white,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: "${city[index]} ${"  "}",
+                                  recognizer: new TapGestureRecognizer()
+                                    ..onTap = () => {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -85,12 +85,12 @@ class weathers extends StatelessWidget {
                                                 curr: false)), //Set to false
                                       ),
                                     },
-                            ),
-                            TextSpan(
-                              text:
+                                ),
+                                TextSpan(
+                                  text:
                                   " ${degrees[index]} ${'°F                                                           '}",
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () => {
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () => {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -100,25 +100,23 @@ class weathers extends StatelessWidget {
                                                 curr: false)), //Set to false
                                       ),
                                     },
+                                ),
+                                const WidgetSpan(
+                                  child: Icon(Icons.cloud, size: 60),
+                                ),
+                              ],
                             ),
-                            const WidgetSpan(
-                              child: Icon(Icons.cloud, size: 60),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  )
+                          ),
+                        ],
+                      )
 
-                      /* child: Text(
-
+                    /* child: Text(
                     '${city[index] } ${ "  "}'
                       ' ${ degrees[index]} ${'°F'} '
                     '${Icons.cloud}',
                       style: TextStyle(fontSize: 30),
-
                       textAlign: TextAlign.center),*/
-                      ));
+                  ));
             }));
 
     // );

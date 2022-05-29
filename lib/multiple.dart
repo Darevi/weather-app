@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -12,7 +11,7 @@ class Multiple extends StatefulWidget {
   State<StatefulWidget> createState() => _MultipleState();
 }
 
- class _MultipleState extends State<Multiple> {
+class _MultipleState extends State<Multiple> {
   //List of location(s).
   List<Location> locs = [
     Location(
@@ -32,7 +31,7 @@ class Multiple extends StatefulWidget {
 
       if (response.statusCode == 200) {
         MultiplesForecastData newForecast =
-            MultiplesForecastData.fromJson(jsonDecode(response.body));
+        MultiplesForecastData.fromJson(jsonDecode(response.body));
         forecasts.add(newForecast);
       } else {
         throw Exception("Error loading request URL info");
@@ -53,26 +52,26 @@ class Multiple extends StatefulWidget {
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if(snapshot.hasData) {
                 return ListView.builder(
-                  itemCount: snapshot.data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return MultiplesForecastItem(
-                        weather: snapshot.data.elementAt(index));
-                  });
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return MultiplesForecastItem(
+                          weather: snapshot.data.elementAt(index));
+                    });
               }else {
                 return Center(
-                  child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Loading...",
-                         style: TextStyle(fontSize: 30.0, color: Colors.purple),
-                      ),
-                      CircularProgressIndicator(),
-                      SizedBox(
-                        height: 15,
-                      ),
-                    ],
-                  ));
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Loading...",
+                          style: TextStyle(fontSize: 30.0, color: Colors.purple),
+                        ),
+                        CircularProgressIndicator(),
+                        SizedBox(
+                          height: 15,
+                        ),
+                      ],
+                    ));
               }
             },
           ),
@@ -85,9 +84,9 @@ class Multiple extends StatefulWidget {
   final String latitude;
   final String longitude;
   final String cityName;
-
   Location(
       {required this.latitude,
       required this.longitude,
       required this.cityName});
 }*/
+
