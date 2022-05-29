@@ -80,13 +80,6 @@ class HomeScreenState extends State<HomeScreen> {
                           windSpeed: snapshot.data?.windSpeed);
                     } else {
                       return Center(
-
-                        child: Text(
-                          "LOADING...",
-                          style:
-                          TextStyle(fontSize: 30.0, color: Colors.purple),
-                        ),
-                      );
                           child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -99,7 +92,7 @@ class HomeScreenState extends State<HomeScreen> {
                             height: 15,
                             ),
                           ],
-                      );
+                      ));
                     }
                   }),
               _hourlyForecast(),
@@ -146,11 +139,11 @@ class HomeScreenState extends State<HomeScreen> {
       ),
       child: hourlyForecast != null
           ? ListView.builder(
-        itemCount: hourlyForecast?.list.length,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) => HourlyForecastItem(
-            weather: hourlyForecast?.list.elementAt(index)),
-      )
+              itemCount: hourlyForecast?.list.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) => HourlyForecastItem(
+                  weather: hourlyForecast?.list.elementAt(index)),
+            )
           : Container(),
     );
   }
@@ -164,11 +157,11 @@ class HomeScreenState extends State<HomeScreen> {
         // ignore: unnecessary_null_comparison
         child: forecast != null
             ? ListView.builder(
-          itemCount: forecast?.list.length,
-          scrollDirection: Axis.vertical,
-          itemBuilder: (context, index) =>
-              DailyWeatherItem(weather: forecast?.list.elementAt(index)),
-        )
+                itemCount: forecast?.list.length,
+                scrollDirection: Axis.vertical,
+                itemBuilder: (context, index) =>
+                    DailyWeatherItem(weather: forecast?.list.elementAt(index)),
+              )
             : Container(),
       ),
     );
@@ -187,10 +180,7 @@ class HomeScreenState extends State<HomeScreen> {
     String longitude = '';
     if (curr == true) {
       List<String> currPosition = await CurrentLocation.updatePosition()
-
-      as List<String>; //Get the current location of the user
-
-
+          as List<String>; //Get the current location of the user
       latitude = currPosition[0];
       longitude = currPosition[1];
     } else {
@@ -220,5 +210,5 @@ class HomeScreenState extends State<HomeScreen> {
     });
   }
 
-//setState(Null Function() param0) {}
+  //setState(Null Function() param0) {}
 }

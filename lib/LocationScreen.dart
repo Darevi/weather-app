@@ -5,7 +5,6 @@ import 'package:mock_weather/Homescreen.dart';
 
 import 'jsonReader.dart';
 import 'locations.dart';
-
 import 'main.dart';
 
 import 'package:flutter/material.dart';
@@ -159,7 +158,6 @@ class LocationScreenState extends State<LocationScreen> {
   }
 
 
-
 }
 
 class LocationScreen extends StatefulWidget {
@@ -172,9 +170,6 @@ class LocationScreen extends StatefulWidget {
 }
 
 class AutocompleteLocation extends StatelessWidget {
-
-  JsonReader reader = JsonReader();
-
   late TextEditingController fieldTextEditingController;
 
   void clearText(){
@@ -212,7 +207,6 @@ class AutocompleteLocation extends StatelessWidget {
         )
         );
       },
-
       onSelected: (String selection) {
         Location selectedLoc = searchLoc(reader.locationList, selection);
         debugPrint('You just selected $selection');

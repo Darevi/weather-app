@@ -14,7 +14,6 @@ class MultiplesForecastData {
       required this.location});
 
   factory MultiplesForecastData.fromJson(Map<String, dynamic> json) {
-
     return MultiplesForecastData(
       location: json['name'],
       temp: json['main']['temp'].toInt(),
