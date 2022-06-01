@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, no_logic_in_create_state, dead_code, use_key_in_widget_constructors, must_be_immutable, prefer_const_declarations
 import 'dart:io';
+import 'dart:js';
 
 import 'package:mock_weather/Homescreen.dart';
 
@@ -22,29 +23,44 @@ import 'tools/current_location.dart';
 String locToSearch = " ";
 
 class LocationScreenState extends State<LocationScreen> {
-
   getCityName(String latitude, String longitude) async {
     final apiKey = "01787ca7c37221e8632a2dab11901f4c";
-    final requestUrl = "https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}";
-    
+    final requestUrl =
+        "https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}";
+
     final response = await http.get(Uri.parse(requestUrl));
 
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       var data = json.decode(response.body);
       return data['name'];
-    }else {
+    } else {
       throw Exception("Error loading request URL info");
     }
   }
 
   currWeather() async {
-    List <String> currData = await CurrentLocation.updatePosition()
-      as List<String>;
+    List<String> currData =
+        await CurrentLocation.updatePosition() as List<String>;
     String cityName = await getCityName(currData[0], currData[1]);
-    locs.add(Location(cityName, "", "", double.parse(currData[0]), double.parse(currData[1])));
+    locs.add(Location(cityName, "", "", double.parse(currData[0]),
+        double.parse(currData[1])));
   }
-  static List<Location> locs = [Location("New York", "", "", 40.7128, -74.0060), Location("London", "", "", 51.5072, -0.1276), 
-                         Location("Tokyo", "", "", 35.6762, 139.6503)];
+
+//Method to add a forecast to the user's favorites list. The list's length tops out at 11 locations. If the user reaches
+// the allotted amount of locations and wishes to add another, then they will have to delete one of the existing locations.
+  static _addForecast(Location location) {
+    if (!locs.contains(location) && locs.length <= 11) {
+      locs.add(location);
+    }
+    //Need to add a dialog box here for when the maximum length is reached
+    //Also need a way to conveniently delete a selected location.
+  }
+
+  static List<Location> locs = [
+    Location("New York", "", "", 40.7128, -74.0060),
+    Location("London", "", "", 51.5072, -0.1276),
+    Location("Tokyo", "", "", 35.6762, 139.6503)
+  ];
 
   static Future<List<MultiplesForecastData>> _getForecasts(
       List<Location> locations) async {
@@ -66,7 +82,6 @@ class LocationScreenState extends State<LocationScreen> {
     return forecasts;
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,14 +102,21 @@ class LocationScreenState extends State<LocationScreen> {
                 icon: Icon(Icons.my_location),
                 tooltip: 'search for your current location',
                 //to get current location
-                onPressed: () { //When the my_location icon is tapped
-                  Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => HomeScreen(lon: '', lat: '', curr: true)), //Because curr is set to true it will get current location
+                onPressed: () {
+                  //When the my_location icon is tapped
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => HomeScreen(
+                            lon: '',
+                            lat: '',
+                            curr:
+                                true)), //Because curr is set to true it will get current location
                   );
                 },
               ),
             ],
-            
+
             bottom: AppBar(
               //back button gone
               automaticallyImplyLeading: false,
@@ -103,7 +125,6 @@ class LocationScreenState extends State<LocationScreen> {
                 width: double.infinity,
                 height: 40,
                 color: Colors.white,
-
                 child: Center(
                   //this is the search bar displayed code
                   child: AutocompleteLocation(),
@@ -111,53 +132,51 @@ class LocationScreenState extends State<LocationScreen> {
               ),
             ),
           ),
-          
+
           // Other Sliver Widgets
           SliverList(
             delegate: SliverChildListDelegate([
-              Container( //This container contains the list of different cities
+              Container(
+                //This container contains the list of different cities
                 height: MediaQuery.of(context).size.height,
                 //color: Colors.dark,
                 child: FutureBuilder(
                   future: _getForecasts(locs),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if(snapshot.hasData) {
+                    if (snapshot.hasData) {
                       return ListView.builder(
-                        itemCount: snapshot.data.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return MultiplesForecastItem(
-                              weather: snapshot.data.elementAt(index));
-                        });
-                    }else {
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return MultiplesForecastItem(
+                                weather: snapshot.data.elementAt(index));
+                          });
+                    } else {
                       return Center(
-                        child: Row(
+                          child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Loading...",
-                              style: TextStyle(fontSize: 30.0, color: Colors.purple),
-                            ),
-                            CircularProgressIndicator(),
-                            SizedBox(
-                              height: 15,
-                            ),
-                          ],
-                        )
-                      );
+                        children: [
+                          Text(
+                            "Loading...",
+                            style:
+                                TextStyle(fontSize: 30.0, color: Colors.purple),
+                          ),
+                          CircularProgressIndicator(),
+                          SizedBox(
+                            height: 15,
+                          ),
+                        ],
+                      ));
                     }
                   },
                   //child: AutocompleteLocation(),
                 ),
               ),
             ]),
-
           ),
         ],
       ),
     );
   }
-
-
 }
 
 class LocationScreen extends StatefulWidget {
@@ -172,72 +191,90 @@ class LocationScreen extends StatefulWidget {
 class AutocompleteLocation extends StatelessWidget {
   late TextEditingController fieldTextEditingController;
 
-  void clearText(){
+  void clearText() {
     fieldTextEditingController.clear();
   }
+
   @override
   Widget build(BuildContext context) {
-
     return Autocomplete<String>(
       fieldViewBuilder: (
-          BuildContext context,
-          TextEditingController fieldTextEditingController,
-          FocusNode fieldFocusNode,
-          VoidCallback onFieldSubmitted,
-
-          ){
-
+        BuildContext context,
+        TextEditingController fieldTextEditingController,
+        FocusNode fieldFocusNode,
+        VoidCallback onFieldSubmitted,
+      ) {
         return Container(
             width: double.infinity,
             height: 40,
             color: Colors.white,
-        child: TextField(
-
-          controller: fieldTextEditingController,
-          focusNode: fieldFocusNode,
-          style:  const TextStyle(fontSize: 16.0, color: Colors.black),
-          decoration: InputDecoration(
-              hintText: 'Insert city or zip code',
-              prefixIcon: Icon(Icons.search),
-              suffixIcon: IconButton(
-                icon: Icon(Icons.clear),
-                onPressed: clearText,
-              )//(Icons.clear)
-          ),
-        )
-        );
+            child: TextField(
+              controller: fieldTextEditingController,
+              focusNode: fieldFocusNode,
+              style: const TextStyle(fontSize: 16.0, color: Colors.black),
+              decoration: InputDecoration(
+                  hintText: 'Insert city or zip code',
+                  prefixIcon: Icon(Icons.search),
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.clear),
+                    onPressed: clearText,
+                  ) //(Icons.clear)
+                  ),
+            ));
       },
       onSelected: (String selection) {
         Location selectedLoc = searchLoc(reader.locationList, selection);
         debugPrint('You just selected $selection');
-        debugPrint('Lat and Long are ' + selectedLoc.lat.toString() + ', ' + selectedLoc.lon.toString());
+        debugPrint('Lat and Long are ' +
+            selectedLoc.lat.toString() +
+            ', ' +
+            selectedLoc.lon.toString());
 
         //Pop up dialog box to prompt user to save their search to the locations list
-        showDialog(context: context, builder: (context) => AlertDialog(
-          title: Text('Add this location?'),
-          content: Text('Would you like to add this locaiton to your saved list of locations?'),
-          actions: [
-            TextButton(
-              child: Text('NO'),
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: 
-                        (context) => HomeScreen(lon: selectedLoc.lat.toString(), lat: selectedLoc.lon.toString(), curr: false)))),
-            TextButton(
-              child: Text('YES'),
-              onPressed://              !!!!!THIS IS WHERE THE CODE TO ADD TO LOCATIONS LIST WILL GO!!!!!
-                        () => Navigator.push(context, MaterialPageRoute(builder: 
-                        (context) => HomeScreen(lon: selectedLoc.lat.toString(), lat: selectedLoc.lon.toString(), curr: false))))
-          ],
-        ));
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: Text('Add this location?'),
+                  content: Text(
+                      'Would you like to add this locaiton to your saved list of locations?'),
+                  actions: [
+                    TextButton(
+                        child: Text('NO'),
+                        onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomeScreen(
+                                    lon: selectedLoc.lat.toString(),
+                                    lat: selectedLoc.lon.toString(),
+                                    curr: false)))),
+                    TextButton(
+                      child: Text('YES'),
+                      //Clicking 'YES' will route to a view of the selected location's forecast and add that location's
+                      //..forecast to the user's favorites list as long as the length of the list is <= 11 locations.
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomeScreen(
+                                    lon: selectedLoc.lat.toString(),
+                                    lat: selectedLoc.lon.toString(),
+                                    curr: false)));
+                        LocationScreenState._addForecast(selectedLoc);
+                      },
+                    ),
+                  ],
+                ));
       },
       optionsBuilder: (TextEditingValue textEditingValue) {
         if (textEditingValue.text == '') {
           return const Iterable<String>.empty();
         }
         return reader.locationStringList.where((String option) {
-          return option.toLowerCase().contains(textEditingValue.text.toLowerCase());
+          return option
+              .toLowerCase()
+              .contains(textEditingValue.text.toLowerCase());
         });
       },
-
     );
   }
 
@@ -246,7 +283,7 @@ class AutocompleteLocation extends StatelessWidget {
     int start = 0;
     int end = loc.indexOf(',', start);
 
-    String city = loc.substring(start,end);
+    String city = loc.substring(start, end);
 
     start = end + 2;
     end = loc.indexOf(',', start);
@@ -259,7 +296,9 @@ class AutocompleteLocation extends StatelessWidget {
 
     // compares city, state, country substrings with counter parts in locationList
     for (int i = 0; i < locationList.length; i++) {
-      if (locationList[i].city == city && locationList[i].state == state && locationList[i].country == country) {
+      if (locationList[i].city == city &&
+          locationList[i].state == state &&
+          locationList[i].country == country) {
         // returns specific location if successful
         return locationList[i];
       }
@@ -268,5 +307,5 @@ class AutocompleteLocation extends StatelessWidget {
     // this should hopefully never happen
     debugPrint("no location found, this shouldn't happen.");
     return locationList[0];
-  } 
+  }
 }
