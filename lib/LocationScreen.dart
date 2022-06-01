@@ -236,7 +236,7 @@ class AutocompleteLocation extends StatelessWidget {
             builder: (context) => AlertDialog(
                   title: Text('Add this location?'),
                   content: Text(
-                      'Would you like to add this locaiton to your saved list of locations?'),
+                      'Would you like to add this location to your saved list of locations?'),
                   actions: [
                     TextButton(
                         child: Text('NO'),
