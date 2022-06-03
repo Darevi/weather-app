@@ -26,7 +26,7 @@ class DailyWeatherItem extends StatelessWidget {
     return Card(
       child: Stack(
         children: [
-          WeatherBg(weatherType: weather_bg, width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height/3),
+          WeatherBg(weatherType: weather_bg, width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height/4),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
