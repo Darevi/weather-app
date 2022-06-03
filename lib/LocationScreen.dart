@@ -1,20 +1,20 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, no_logic_in_create_state, dead_code, use_key_in_widget_constructors, must_be_immutable, prefer_const_declarations
-import 'dart:io';
-import 'dart:js';
+//mport 'dart:io';
+//import 'dart:js';
 
 import 'package:mock_weather/Homescreen.dart';
 
-import 'jsonReader.dart';
+//import 'jsonReader.dart';
 import 'locations.dart';
 import 'main.dart';
 
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
+//import 'package:flutter/material.dart';
 import 'package:mock_weather/MultiplesForecastItem.dart';
 import 'MultiplesForecastData.dart';
-import 'multiple.dart';
+//import 'multiple.dart';
 import 'tools/current_location.dart';
 
 // hello there
@@ -65,7 +65,8 @@ class LocationScreenState extends State<LocationScreen> {
   static Future<List<MultiplesForecastData>> _getForecasts(
       List<Location> locations) async {
     List<MultiplesForecastData> forecasts = [];
-    for (Location l in locations) {
+    for (int i = 0; i < locations.length; i++) {
+      Location l = locations[i];
       const apiKey = "01787ca7c37221e8632a2dab11901f4c";
       final requestUrl =
           "https://api.openweathermap.org/data/2.5/weather?lat=${l.lat}&lon=${l.lon}&units=imperial&appid=$apiKey";
@@ -138,7 +139,7 @@ class LocationScreenState extends State<LocationScreen> {
             delegate: SliverChildListDelegate([
               Container(
                 //This container contains the list of different cities
-                height: MediaQuery.of(context).size.height,
+                height: MediaQuery.of(context).size.height/1.25,
                 //color: Colors.dark,
                 child: FutureBuilder(
                   future: _getForecasts(locs),
