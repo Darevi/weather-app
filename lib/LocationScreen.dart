@@ -27,7 +27,7 @@ class LocationScreenState extends State<LocationScreen> {
     final apiKey = "01787ca7c37221e8632a2dab11901f4c";
     final requestUrl =
         "https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}";
-
+    final VoidCallback onDelete;
     final response = await http.get(Uri.parse(requestUrl));
 
     if (response.statusCode == 200) {
@@ -147,6 +147,10 @@ class LocationScreenState extends State<LocationScreen> {
                       return ListView.builder(
                           itemCount: snapshot.data.length,
                           itemBuilder: (BuildContext context, int index) {
+                           /* IconButton
+                              (icon: Icon(Icons.delete),
+                              onPressed: this.onDelete,
+                            );*/
                             return GestureDetector(
                               onTap: (){
                                 Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeScreen(lon: locs[index].lat.toString(), lat: locs[index].lon.toString(), curr: false)));
@@ -154,8 +158,7 @@ class LocationScreenState extends State<LocationScreen> {
                               child:  MultiplesForecastItem(
                             weather: snapshot.data.elementAt(index)),
                             );
-                           // return MultiplesForecastItem(
-                          //      weather: snapshot.data.elementAt(index));
+
                           });
                     } else {
                       return Center(
