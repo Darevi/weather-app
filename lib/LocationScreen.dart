@@ -49,7 +49,7 @@ class LocationScreenState extends State<LocationScreen> {
 //Method to add a forecast to the user's favorites list. The list's length tops out at 11 locations. If the user reaches
 // the allotted amount of locations and wishes to add another, then they will have to delete one of the existing locations.
   static _addForecast(Location location) {
-    if (!locs.contains(location) && locs.length <= 11) {
+    if (!locs.contains(location)) {
       locs.add(location);
     }
     //Need to add a dialog box here for when the maximum length is reached
@@ -139,7 +139,7 @@ class LocationScreenState extends State<LocationScreen> {
             delegate: SliverChildListDelegate([
               Container(
                 //This container contains the list of different cities
-                height: MediaQuery.of(context).size.height/1.25,
+                height: MediaQuery.of(context).size.height / 1.25,
                 //color: Colors.dark,
                 child: FutureBuilder(
                   future: _getForecasts(locs),
@@ -270,7 +270,23 @@ class AutocompleteLocation extends StatelessWidget {
                                     lon: selectedLoc.lat.toString(),
                                     lat: selectedLoc.lon.toString(),
                                     curr: false)));
-                        LocationScreenState._addForecast(selectedLoc);
+                        if (LocationScreenState.locs.length == 11) {
+                          LocationScreenState._addForecast(selectedLoc);
+                        } else {
+                          showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                    title: Text("Location Limit Reached!"),
+                                    content: Text(
+                                        "Please delete a location if you want to add another"),
+                                    actions: [
+                                      TextButton(
+                                          child: Text("OK"),
+                                          onPressed: () => Navigator.pushNamed(
+                                              context, '/chi'))
+                                    ],
+                                  ));
+                        }
                       },
                     ),
                   ],
