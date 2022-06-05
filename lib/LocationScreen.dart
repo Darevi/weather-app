@@ -266,13 +266,26 @@ class AutocompleteLocation extends StatelessWidget {
                 ));
       },
       optionsBuilder: (TextEditingValue textEditingValue) {
-        if (textEditingValue.text == '') {
+        String input = textEditingValue.text;
+        if (input == '') {
           return const Iterable<String>.empty();
         }
+        List<String> strList = <String>[];
+        if (input.contains(' ')) {
+          strList.add(input.substring(0, input.indexOf(' ')));
+          strList.add(input.substring(input.indexOf(' ') + 1));
+        }
+
         return reader.locationStringList.where((String option) {
-          return option
-              .toLowerCase()
-              .contains(textEditingValue.text.toLowerCase());
+          if (option.toLowerCase().contains(input.toLowerCase())) {
+            return true;
+          }
+          if (strList.isNotEmpty) {
+            if (option.toLowerCase().contains(strList[0].toLowerCase()) && option.toLowerCase().contains(strList[1].toLowerCase())) {
+              return true;
+            }
+          }
+          return false;
         });
       },
     );
@@ -309,3 +322,58 @@ class AutocompleteLocation extends StatelessWidget {
     return locationList[0];
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
