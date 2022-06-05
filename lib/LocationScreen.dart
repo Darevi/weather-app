@@ -1,20 +1,20 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, no_logic_in_create_state, dead_code, use_key_in_widget_constructors, must_be_immutable, prefer_const_declarations
-import 'dart:io';
-import 'dart:js';
+//mport 'dart:io';
+//import 'dart:js';
 
 import 'package:mock_weather/Homescreen.dart';
 
-import 'jsonReader.dart';
+//import 'jsonReader.dart';
 import 'locations.dart';
 import 'main.dart';
 
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
+//import 'package:flutter/material.dart';
 import 'package:mock_weather/MultiplesForecastItem.dart';
 import 'MultiplesForecastData.dart';
-import 'multiple.dart';
+//import 'multiple.dart';
 import 'tools/current_location.dart';
 
 // hello there
@@ -27,7 +27,7 @@ class LocationScreenState extends State<LocationScreen> {
     final apiKey = "01787ca7c37221e8632a2dab11901f4c";
     final requestUrl =
         "https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}";
-
+    final VoidCallback onDelete;
     final response = await http.get(Uri.parse(requestUrl));
 
     if (response.statusCode == 200) {
@@ -49,7 +49,7 @@ class LocationScreenState extends State<LocationScreen> {
 //Method to add a forecast to the user's favorites list. The list's length tops out at 11 locations. If the user reaches
 // the allotted amount of locations and wishes to add another, then they will have to delete one of the existing locations.
   static _addForecast(Location location) {
-    if (!locs.contains(location) && locs.length <= 11) {
+    if (!locs.contains(location)) {
       locs.add(location);
     }
     //Need to add a dialog box here for when the maximum length is reached
@@ -65,7 +65,8 @@ class LocationScreenState extends State<LocationScreen> {
   static Future<List<MultiplesForecastData>> _getForecasts(
       List<Location> locations) async {
     List<MultiplesForecastData> forecasts = [];
-    for (Location l in locations) {
+    for (int i = 0; i < locations.length; i++) {
+      Location l = locations[i];
       const apiKey = "01787ca7c37221e8632a2dab11901f4c";
       final requestUrl =
           "https://api.openweathermap.org/data/2.5/weather?lat=${l.lat}&lon=${l.lon}&units=imperial&appid=$apiKey";
@@ -138,7 +139,7 @@ class LocationScreenState extends State<LocationScreen> {
             delegate: SliverChildListDelegate([
               Container(
                 //This container contains the list of different cities
-                height: MediaQuery.of(context).size.height,
+                height: MediaQuery.of(context).size.height / 1.25,
                 //color: Colors.dark,
                 child: FutureBuilder(
                   future: _getForecasts(locs),
@@ -147,8 +148,18 @@ class LocationScreenState extends State<LocationScreen> {
                       return ListView.builder(
                           itemCount: snapshot.data.length,
                           itemBuilder: (BuildContext context, int index) {
-                            return MultiplesForecastItem(
-                                weather: snapshot.data.elementAt(index));
+                           /* IconButton
+                              (icon: Icon(Icons.delete),
+                              onPressed: this.onDelete,
+                            );*/
+                            return GestureDetector(
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeScreen(lon: locs[index].lat.toString(), lat: locs[index].lon.toString(), curr: false)));
+                              },
+                              child:  MultiplesForecastItem(
+                            weather: snapshot.data.elementAt(index)),
+                            );
+
                           });
                     } else {
                       return Center(
@@ -259,7 +270,23 @@ class AutocompleteLocation extends StatelessWidget {
                                     lon: selectedLoc.lat.toString(),
                                     lat: selectedLoc.lon.toString(),
                                     curr: false)));
-                        LocationScreenState._addForecast(selectedLoc);
+                        if (LocationScreenState.locs.length == 11) {
+                          LocationScreenState._addForecast(selectedLoc);
+                        } else {
+                          showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                    title: Text("Location Limit Reached!"),
+                                    content: Text(
+                                        "Please delete a location if you want to add another"),
+                                    actions: [
+                                      TextButton(
+                                          child: Text("OK"),
+                                          onPressed: () => Navigator.pushNamed(
+                                              context, '/chi'))
+                                    ],
+                                  ));
+                        }
                       },
                     ),
                   ],
