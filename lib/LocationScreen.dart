@@ -270,7 +270,7 @@ class AutocompleteLocation extends StatelessWidget {
                                     lon: selectedLoc.lat.toString(),
                                     lat: selectedLoc.lon.toString(),
                                     curr: false)));
-                        if (LocationScreenState.locs.length == 11) {
+                        if (LocationScreenState.locs.length <= 11) { //Check if the user has too many locations added to the list
                           LocationScreenState._addForecast(selectedLoc);
                         } else {
                           showDialog(
