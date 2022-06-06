@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_weather_bg_null_safety/utils/weather_type.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'MultiplesForecastData.dart';
@@ -23,17 +24,21 @@ class MultiplesForecastItem extends StatelessWidget {
       weather_bg = WeatherType.foggy;
     }else if(weather.weatherCondition.contains("clouds")){
       weather_bg = WeatherType.cloudy;
-    }else if(weather.weatherCondition.contains("")){
-      weather_bg = WeatherType.foggy;
-    }else{
+    }else if(weather.weatherCondition.contains("light rain")){
+      weather_bg = WeatherType.lightRainy;
+    }else if(weather.weatherCondition.contains("rain")) {
+      weather_bg = WeatherType.middleRainy;
+    }
+    else {
       weather_bg = WeatherType.sunny;
     }
     return Card(
       child: Stack(
         children: [
-          WeatherBg(weatherType: weather_bg, width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height/4),
+          WeatherBg(weatherType: weather_bg, width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height/5),
           Padding(
             padding: const EdgeInsets.all(8.0),
+            child:Center(
             child: Column(children: <Widget>[
               Text(weather.location,
                   style: const TextStyle(color: Colors.black, fontSize: 15.0)),
@@ -43,6 +48,7 @@ class MultiplesForecastItem extends StatelessWidget {
                   style: const TextStyle(color: Colors.black)),
               Image.network('https://openweathermap.org/img/w/${weather.icon}.png'),
             ]),
+            ),
           ),
         ],
       ),

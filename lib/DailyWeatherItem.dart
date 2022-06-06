@@ -19,16 +19,17 @@ class DailyWeatherItem extends StatelessWidget {
     if(weather.main == "Clouds"){
       weather_bg = WeatherType.cloudy;
     }else if(weather.main == "Rain"){
-      weather_bg = WeatherType.heavyRainy;
+      weather_bg = WeatherType.middleRainy;
     }else if(weather.main == "Clear"){
       weather_bg = WeatherType.sunny;
     }
     return Card(
       child: Stack(
         children: [
-          WeatherBg(weatherType: weather_bg, width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height/4),
+          WeatherBg(weatherType: weather_bg, width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height/5),
           Padding(
             padding: const EdgeInsets.all(8.0),
+            child:Center(
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -40,7 +41,8 @@ class DailyWeatherItem extends StatelessWidget {
                       style: new TextStyle(color: Colors.black)),
                   Image.network(
                       'https://openweathermap.org/img/w/${weather.icon}.png'),
-                ],
+        ],
+            ),
             ),
           ),
         ],
