@@ -45,7 +45,7 @@ class MainWidget extends StatelessWidget {
       weather_bg = WeatherType.lightSnow;
     } else {
       weatherIcon = Icons.cloud_outlined;
-      weather_bg = WeatherType.dusty;
+      weather_bg = WeatherType.sunny;
       if(weather.contains("overcast")){
         weather_bg = WeatherType.overcast;
       }else if(weather.contains("clouds")){

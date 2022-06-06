@@ -9,7 +9,7 @@ import 'package:flutter_weather_bg_null_safety/flutter_weather_bg.dart';
 
 class DailyWeatherItem extends StatelessWidget {
   final DailyWeatherData weather;
-  WeatherType weather_bg = WeatherType.dusty;
+  WeatherType weather_bg = WeatherType.sunny;
   // ignore: prefer_const_constructors_in_immutables
   DailyWeatherItem({required this.weather});
 
