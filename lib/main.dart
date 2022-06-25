@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(primarySwatch: Colors.blue, brightness: Brightness.dark),
       initialRoute: '/',
       routes: {
-        '/': (_) => HomeScreen(lon: '46.9965', lat: '-120.5478', curr: false),
+        '/': (_) => HomeScreen(lon: '46.9965', lat: '-120.5478', curr: true),
         '/chi': (_) => LocationScreen(),
         //'/mult': (_) => Multiple(),
       },
